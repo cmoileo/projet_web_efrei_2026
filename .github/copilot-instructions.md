@@ -196,13 +196,3 @@ Toute implémentation doit suivre le cycle **Red → Green → Refactor** :
 ### Agent Flutter (Mobile)
 → Se référer aux instructions spécifiques Flutter pour les patterns de widgets, navigation, gestion de state et intégration Firebase.
 
----
-
-## 🧪 Tests
-
-- **Approche TDD obligatoire** : les tests sont écrits avant le code de production (cycle Red → Green → Refactor)
-- Chaque fonctionnalité doit être accompagnée de tests
-- **Angular** : tests unitaires avec Jest ou Karma (`*.spec.ts`)
-- **Flutter** : tests unitaires et widget tests (`*_test.dart`)
-- Les tests doivent couvrir les règles métier liées aux rôles (élève / bénévole)
-- Les cas limites et les erreurs doivent être testés au même titre que le chemin nominal

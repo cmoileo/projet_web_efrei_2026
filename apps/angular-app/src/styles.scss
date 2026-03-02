@@ -1,0 +1,131 @@
+// ============================================================
+// Global Styles — Learn@Home Angular App
+// ============================================================
+
+// 1. Design tokens (CSS custom properties) — DOIT être en premier
+@use './styles/tokens';
+
+// 2. Police Inter depuis Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+// ─── Reset & Base ─────────────────────────────────────────
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-regular);
+  color: var(--color-text-primary);
+  background-color: var(--color-bg);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// ─── Typographie globale ───────────────────────────────────
+h1 {
+  font-size: var(--font-size-display);
+  font-weight: var(--font-weight-bold);
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: var(--font-size-heading);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.3;
+}
+
+h3 {
+  font-size: var(--font-size-subheading);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1.4;
+}
+
+p {
+  font-size: var(--font-size-body);
+  line-height: 1.6;
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// ─── Utilitaires ──────────────────────────────────────────
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// ─── Surcharge Material : polices & couleurs de surface ───
+.mat-mdc-form-field,
+.mdc-text-field--outlined,
+.mat-mdc-dialog-container {
+  font-family: var(--font-family) !important;
+}
+
+.mat-mdc-snack-bar-container {
+  border-radius: var(--radius-md) !important;
+  padding: 0 !important;
+
+  .mdc-snackbar__surface {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+}
+
+// ─── Overlay Material Dialog ──────────────────────────────
+.lah-dialog-backdrop {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+}
+
+.lah-dialog-panel {
+  .mat-mdc-dialog-surface {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    border-radius: var(--radius-lg) !important;
+  }
+}
+
+// ─── Surcharge Material Checkbox ─────────────────────────
+.mat-mdc-checkbox {
+  --mdc-checkbox-selected-checkmark-color: #ffffff;
+  --mdc-checkbox-selected-focus-icon-color: var(--color-primary);
+  --mdc-checkbox-selected-hover-icon-color: var(--color-primary);
+  --mdc-checkbox-selected-icon-color: var(--color-primary);
+  --mdc-checkbox-selected-pressed-icon-color: var(--color-primary);
+  --mdc-checkbox-unselected-icon-color: var(--color-border);
+}
+
+// ─── Surcharge Material Tooltip ───────────────────────────
+.mat-mdc-tooltip {
+  --mdc-plain-tooltip-container-color: var(--color-text-primary) !important;
+  --mdc-plain-tooltip-supporting-text-color: #ffffff !important;
+  font-family: var(--font-family) !important;
+  font-size: var(--font-size-small) !important;
+  border-radius: var(--radius-sm) !important;
+}

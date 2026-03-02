@@ -402,87 +402,6 @@ export class AuthGuard implements CanActivate {
 
 ---
 
-## 🧪 Tests
-
-### Structure
-
-```
-src/app/
-├── features/tasks/
-│   ├── services/
-│   │   ├── task.service.ts
-│   │   └── task.service.spec.ts    # Test unitaire du service
-│   └── components/task-list/
-│       ├── task-list.component.ts
-│       └── task-list.component.spec.ts  # Test du composant
-```
-
-### Pattern Test Unitaire
-
-```typescript
-describe('TaskService', () => {
-  let service: TaskService
-  let firestoreMock: jasmine.SpyObj<Firestore>
-
-  beforeEach(() => {
-    firestoreMock = jasmine.createSpyObj('Firestore', ['collection'])
-
-    TestBed.configureTestingModule({
-      providers: [
-        TaskService,
-        { provide: Firestore, useValue: firestoreMock },
-      ],
-    })
-
-    service = TestBed.inject(TaskService)
-  })
-
-  it('devrait retourner les tâches de l'utilisateur courant', (done) => {
-    const mockTasks: Task[] = [{ id: '1', title: 'Révisions maths', ... }]
-    // ... setup mock et assertion
-  })
-})
-```
-
-### Commandes
-
-```bash
-cd apps/angular-app
-npm run test          # Tests unitaires
-npm run test:watch    # Mode watch
-npm run lint          # Linting
-npm run build         # Vérification build
-```
-
----
-
-## 📝 Conventions de Nommage
-
-### Fichiers
-
-| Type | Convention | Exemple |
-|------|------------|---------|
-| Composant | kebab-case | `task-list.component.ts` |
-| Service | kebab-case | `task.service.ts` |
-| Guard | kebab-case | `auth.guard.ts` |
-| Intercepteur | kebab-case | `auth.interceptor.ts` |
-| Pipe | kebab-case | `date-format.pipe.ts` |
-| Directive | kebab-case | `role-visibility.directive.ts` |
-| Routes | kebab-case | `tasks.routes.ts` |
-| Types locaux | kebab-case + `.types.ts` | `task.types.ts` |
-
-### Code
-
-| Élément | Convention | Exemple |
-|---------|------------|---------|
-| Variables / fonctions | camelCase | `getUserTasks()` |
-| Classes / Composants | PascalCase | `TaskListComponent` |
-| Constantes | UPPER_SNAKE_CASE | `MAX_TASKS_PER_USER` |
-| Sélecteurs CSS | kebab-case | `app-task-list` |
-| Collections Firestore | snake_case | `calendar_events` |
-
----
-
 ## ⛔ Interdictions Absolues
 
 1. **JAMAIS** de `any` TypeScript
@@ -508,7 +427,6 @@ npm run build         # Vérification build
 5. **Créer le template HTML** fidèle aux maquettes Figma
 6. **Styler** en SCSS avec convention BEM
 7. **Ajouter la route** avec guard si nécessaire
-8. **Écrire les tests** unitaires du service et du composant
 9. **Vérifier** avec `npm run lint` et `npm run build`
 
 ---
