@@ -11,7 +11,6 @@ void main() async {
   runApp(const ProviderScope(child: LearnAtHomeApp()));
 }
 
-/// Point d'entrée de l'application Learn@Home.
 class LearnAtHomeApp extends StatelessWidget {
   const LearnAtHomeApp({super.key});
 
@@ -21,8 +20,9 @@ class LearnAtHomeApp extends StatelessWidget {
       title: 'Learn@Home',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.light,
-      // TODO: remplacer par RouterConfig GoRouter une fois les routes définies
-      home: const Scaffold(body: Center(child: Text('Learn@Home'))),
+      home: const Scaffold(
+        body: Center(child: Text('Learn@Home')),
+      ),
     );
   }
 }
