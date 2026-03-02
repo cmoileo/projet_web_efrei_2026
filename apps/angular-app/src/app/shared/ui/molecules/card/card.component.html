@@ -1,0 +1,12 @@
+<div
+  class="lah-card"
+  [class.lah-card--flat]="variant() === 'flat'"
+  [class.lah-card--clickable]="clickable()"
+  [class.lah-card--no-padding]="noPadding()"
+  [attr.role]="clickable() ? 'button' : null"
+  [attr.tabindex]="clickable() ? 0 : null"
+  (click)="onClick($event)"
+  (keydown.enter)="onClick($any($event))"
+>
+  <ng-content />
+</div>

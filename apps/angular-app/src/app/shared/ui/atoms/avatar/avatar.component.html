@@ -1,0 +1,23 @@
+<span
+  class="lah-avatar"
+  [style]="sizeStyle()"
+  role="img"
+  [attr.aria-label]="alt()"
+>
+  <!-- Photo de profil -->
+  @if (hasPhoto()) {
+    <img
+      class="lah-avatar__photo"
+      [src]="photoUrl()"
+      [alt]="alt()"
+      (error)="onImageError($event)"
+    />
+  }
+
+  <!-- Initiales (fallback) -->
+  @if (!hasPhoto()) {
+    <span class="lah-avatar__initials" aria-hidden="true">
+      {{ initials().slice(0, 2).toUpperCase() }}
+    </span>
+  }
+</span>

@@ -1,0 +1,133 @@
+// ─── Bouton : styles BEM ──────────────────────────────────
+// Utilise les CSS custom properties des tokens globaux.
+// Les variantes surchargent les propriétés MDC de Material.
+
+:host {
+  display: inline-flex;
+}
+
+.lah-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border-radius: var(--radius-md) !important;
+  font-family: var(--font-family) !important;
+  font-weight: var(--font-weight-medium) !important;
+  transition: opacity var(--transition-fast), box-shadow var(--transition-fast);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  white-space: nowrap;
+
+  // ─── Tailles ──────────────────────────────────────────
+  &--sm {
+    padding: 6px 12px !important;
+    font-size: var(--font-size-small) !important;
+    min-height: 32px;
+  }
+
+  &--md {
+    padding: 10px 20px !important;
+    font-size: var(--font-size-body) !important;
+    min-height: 44px; // zone tactile ≥ 44px
+  }
+
+  &--lg {
+    padding: 14px 28px !important;
+    font-size: var(--font-size-subheading) !important;
+    min-height: 52px;
+  }
+
+  // ─── Variantes ────────────────────────────────────────
+  &--primary {
+    background-color: var(--color-primary) !important;
+    color: #ffffff !important;
+
+    &:hover:not(:disabled) {
+      background-color: color-mix(in srgb, var(--color-primary) 88%, black) !important;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  &--secondary {
+    background-color: var(--color-surface) !important;
+    color: var(--color-primary) !important;
+    border: 1.5px solid var(--color-primary) !important;
+
+    &:hover:not(:disabled) {
+      background-color: var(--color-primary-light) !important;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
+
+  &--ghost {
+    background-color: transparent !important;
+    color: var(--color-text-secondary) !important;
+
+    &:hover:not(:disabled) {
+      background-color: color-mix(in srgb, var(--color-text-secondary) 10%, transparent) !important;
+      color: var(--color-text-primary) !important;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-border);
+      outline-offset: 2px;
+    }
+  }
+
+  &--danger {
+    background-color: var(--color-danger) !important;
+    color: #ffffff !important;
+
+    &:hover:not(:disabled) {
+      background-color: color-mix(in srgb, var(--color-danger) 88%, black) !important;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-danger);
+      outline-offset: 2px;
+    }
+  }
+
+  // ─── État désactivé & loading ────────────────────────
+  &:disabled,
+  &[aria-disabled='true'] {
+    opacity: 0.4 !important;
+    cursor: not-allowed !important;
+    pointer-events: none;
+  }
+
+  &--loading {
+    cursor: wait !important;
+  }
+
+  // ─── Éléments internes ────────────────────────────────
+  &__spinner {
+    flex-shrink: 0;
+
+    // Adapte la couleur du spinner à la variante
+    ::ng-deep circle {
+      stroke: currentColor;
+    }
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  &__label {
+    display: inline-flex;
+    align-items: center;
+  }
+}

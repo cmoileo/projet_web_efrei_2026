@@ -429,91 +429,6 @@ String? currentUserId(CurrentUserIdRef ref) {
 
 ---
 
-## 🧪 Tests
-
-### Structure
-
-```
-test/
-├── features/
-│   └── tasks/
-│       ├── data/
-│       │   └── task_repository_test.dart   # Test du repository
-│       └── presentation/
-│           └── task_provider_test.dart     # Test du provider
-└── shared/
-    └── widgets/
-        └── app_button_test.dart            # Test de widget partagé
-
-integration_test/
-└── app_test.dart                           # Tests d'intégration E2E
-```
-
-### Pattern Test Unitaire (Provider)
-
-```dart
-void main() {
-  group('TaskNotifier', () {
-    late ProviderContainer container;
-    late MockTaskRepository mockRepository;
-
-    setUp(() {
-      mockRepository = MockTaskRepository();
-      container = ProviderContainer(
-        overrides: [
-          taskRepositoryProvider.overrideWithValue(mockRepository),
-        ],
-      );
-    });
-
-    tearDown(() => container.dispose());
-
-    test('createTask — devrait passer en loading puis succès', () async {
-      when(() => mockRepository.createTask(any())).thenAnswer((_) async {});
-
-      final notifier = container.read(taskNotifierProvider.notifier);
-      await notifier.createTask(fakePayload);
-
-      final state = container.read(taskNotifierProvider);
-      expect(state.hasValue, isTrue);
-    });
-  });
-}
-```
-
-### Pattern Widget Test
-
-```dart
-void main() {
-  testWidgets('TaskCard — affiche le titre de la tâche', (tester) async {
-    const task = Task(id: '1', title: 'Révisions maths', ...);
-
-    await tester.pumpWidget(
-      const ProviderScope(
-        child: MaterialApp(
-          home: Scaffold(body: TaskCard(task: task)),
-        ),
-      ),
-    );
-
-    expect(find.text('Révisions maths'), findsOneWidget);
-  });
-}
-```
-
-### Commandes
-
-```bash
-cd apps/flutter-app
-flutter test                          # Tests unitaires et widget
-flutter test integration_test/        # Tests d'intégration
-flutter analyze                       # Analyse statique
-flutter build apk --debug             # Vérification build Android
-flutter build ios --debug             # Vérification build iOS
-```
-
----
-
 ## 📝 Conventions de Nommage
 
 ### Fichiers
@@ -564,8 +479,6 @@ flutter build ios --debug             # Vérification build iOS
 5. **Créer les providers** Riverpod dans `presentation/providers/`
 6. **Créer les widgets** et pages dans `presentation/`
 7. **Brancher la route** dans `core/router/app_router.dart`
-8. **Écrire les tests** unitaires (provider, repository) et widget tests
-9. **Vérifier** avec `flutter analyze` et `flutter test`
 
 ---
 
