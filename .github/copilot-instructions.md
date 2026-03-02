@@ -119,7 +119,21 @@ flutter build ios   # Build iOS
 - **DRY** : toute logique utilisée 2+ fois doit être extraite (service, helper, widget)
 - **KISS** : privilégier la solution la plus simple et lisible
 - **YAGNI** : ne pas anticiper des besoins non exprimés
+- **SOLID** : respecter les principes de conception orientée objet
 - Linting obligatoire avant tout commit
+
+### 7. TDD (Test-Driven Development)
+
+Toute implémentation doit suivre le cycle **Red → Green → Refactor** :
+
+1. **Red** — écrire un test qui échoue décrivant le comportement attendu
+2. **Green** — écrire le code minimal pour faire passer le test
+3. **Refactor** — améliorer le code sans casser les tests
+
+- Ne jamais écrire du code de production avant d'avoir un test qui l'exige
+- Chaque test doit cibler un seul comportement (une assertion par cas)
+- Les tests constituent la documentation vivante du code : ils doivent être lisibles et expressifs
+- Un agent ne considère une tâche comme terminée que lorsque tous les tests passent
 
 ---
 
@@ -186,7 +200,9 @@ flutter build ios   # Build iOS
 
 ## 🧪 Tests
 
+- **Approche TDD obligatoire** : les tests sont écrits avant le code de production (cycle Red → Green → Refactor)
 - Chaque fonctionnalité doit être accompagnée de tests
 - **Angular** : tests unitaires avec Jest ou Karma (`*.spec.ts`)
 - **Flutter** : tests unitaires et widget tests (`*_test.dart`)
 - Les tests doivent couvrir les règles métier liées aux rôles (élève / bénévole)
+- Les cas limites et les erreurs doivent être testés au même titre que le chemin nominal

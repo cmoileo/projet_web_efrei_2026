@@ -93,6 +93,8 @@ catchError((_error: FirebaseError) => of([]))
 
 Les composants doivent être **fins** : affichage et interactions uniquement. Toute logique métier va dans un service.
 
+Utiliser `inject()` pour toutes les injections de dépendances — le constructeur ne doit contenir aucune injection.
+
 ```typescript
 // ✅ Pattern correct
 @Component({
@@ -104,10 +106,8 @@ Les composants doivent être **fins** : affichage et interactions uniquement. To
 export class TaskListComponent implements OnInit {
   tasks$: Observable<Task[]> = EMPTY
 
-  constructor(
-    private readonly taskService: TaskService,
-    private readonly authService: AuthService
-  ) {}
+  private readonly taskService = inject(TaskService)
+  private readonly authService = inject(AuthService)
 
   ngOnInit(): void {
     this.tasks$ = this.taskService.getTasksForCurrentUser()
@@ -136,12 +136,10 @@ La **logique métier et l'accès aux données** vont dans les services.
 // ✅ Pattern Service
 @Injectable({ providedIn: 'root' })
 export class TaskService {
-  private readonly tasksCollection = collection(this.firestore, 'tasks')
+  private readonly firestore = inject(Firestore)
+  private readonly authService = inject(AuthService)
 
-  constructor(
-    private readonly firestore: Firestore,
-    private readonly authService: AuthService
-  ) {}
+  private readonly tasksCollection = collection(this.firestore, 'tasks')
 
   getTasksForCurrentUser(): Observable<Task[]> {
     const userId = this.authService.currentUserId
@@ -184,7 +182,7 @@ canCreateTaskForUser(targetUserId: string): Observable<boolean> {
 // ✅ Guard de rôle pour protéger les routes
 @Injectable({ providedIn: 'root' })
 export class RoleGuard implements CanActivate {
-  constructor(private readonly authService: AuthService) {}
+  private readonly authService = inject(AuthService)
 
   canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
     const requiredRole = route.data['role'] as UserRole
@@ -275,14 +273,14 @@ Utiliser **Reactive Forms** exclusivement. Template-driven forms sont interdits.
 // ✅ Reactive Form
 @Component({ ... })
 export class TaskFormComponent {
+  private readonly fb = inject(FormBuilder)
+
   taskForm: FormGroup = this.fb.group({
     title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     description: ['', Validators.maxLength(500)],
     assignedTo: ['', Validators.required],
     dueDate: [null],
   })
-
-  constructor(private readonly fb: FormBuilder) {}
 
   onSubmit(): void {
     if (this.taskForm.invalid) return
@@ -384,10 +382,8 @@ font-size: 14px;     // INTERDIT
 // ✅ AuthGuard sur toutes les routes protégées
 @Injectable({ providedIn: 'root' })
 export class AuthGuard implements CanActivate {
-  constructor(
-    private readonly authService: AuthService,
-    private readonly router: Router
-  ) {}
+  private readonly authService = inject(AuthService)
+  private readonly router = inject(Router)
 
   canActivate(): Observable<boolean | UrlTree> {
     return this.authService.isAuthenticated$.pipe(
@@ -491,14 +487,15 @@ npm run build         # Vérification build
 
 1. **JAMAIS** de `any` TypeScript
 2. **JAMAIS** de logique métier dans un composant
-3. **JAMAIS** de `subscribe` imbriqués — utiliser `switchMap`, `forkJoin`, etc.
-4. **JAMAIS** de `subscribe` sans unsubscribe (utiliser `async` pipe ou `takeUntilDestroyed`)
-5. **JAMAIS** de template-driven forms
-6. **JAMAIS** de credentials Firebase en dur — utiliser `environment.ts`
-7. **JAMAIS** de `console.log` laissé en production
-8. **JAMAIS** de texte hardcodé dans les templates
-9. **JAMAIS** de règles métier de rôle dans les composants
-10. **JAMAIS** de commentaires inutiles dans le code
+3. **JAMAIS** d'injection de dépendances via le constructeur — utiliser `inject()`
+4. **JAMAIS** de `subscribe` imbriqués — utiliser `switchMap`, `forkJoin`, etc.
+5. **JAMAIS** de `subscribe` sans unsubscribe (utiliser `async` pipe ou `takeUntilDestroyed`)
+6. **JAMAIS** de template-driven forms
+7. **JAMAIS** de credentials Firebase en dur — utiliser `environment.ts`
+8. **JAMAIS** de `console.log` laissé en production
+9. **JAMAIS** de texte hardcodé dans les templates
+10. **JAMAIS** de règles métier de rôle dans les composants
+11. **JAMAIS** de commentaires inutiles dans le code
 
 ---
 
