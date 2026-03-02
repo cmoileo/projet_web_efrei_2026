@@ -1,0 +1,41 @@
+<!--
+  Bouton : applique le directive Material approprié selon la variante.
+  - primary / danger → mat-flat-button (filled)
+  - secondary        → mat-stroked-button (outlined)
+  - ghost            → mat-button (text)
+-->
+<button
+  [attr.type]="type()"
+  [disabled]="isDisabled || null"
+  [class]="'lah-btn lah-btn--' + variant() + ' lah-btn--' + size()"
+  [class.lah-btn--loading]="loading()"
+  mat-button
+  (click)="onClick($event)"
+  [attr.aria-busy]="loading() || null"
+  [attr.aria-disabled]="isDisabled || null"
+>
+  <!-- Spinner de chargement -->
+  @if (loading()) {
+    <mat-progress-spinner
+      class="lah-btn__spinner"
+      mode="indeterminate"
+      [diameter]="iconSize + 4"
+      aria-hidden="true"
+    />
+  }
+
+  <!-- Icône à gauche du label -->
+  @if (icon() && !loading()) {
+    <lucide-angular
+      class="lah-btn__icon"
+      [img]="icon()"
+      [size]="iconSize"
+      aria-hidden="true"
+    />
+  }
+
+  <!-- Contenu textuel du bouton -->
+  <span class="lah-btn__label">
+    <ng-content />
+  </span>
+</button>

@@ -1,0 +1,57 @@
+// ─── MessageBubble molecule ───────────────────────────────
+
+:host {
+  display: block;
+}
+
+.lah-bubble-wrapper {
+  display: flex;
+  flex-direction: column;
+  max-width: 70%;
+  gap: var(--space-1);
+
+  &--me {
+    align-items: flex-end;
+    align-self: flex-end;
+    margin-left: auto;
+  }
+
+  &--other {
+    align-items: flex-start;
+    align-self: flex-start;
+  }
+}
+
+.lah-bubble {
+  padding: var(--space-2) var(--space-3);
+  line-height: 1.5;
+  font-size: var(--font-size-body);
+  word-break: break-word;
+
+  // ─── Mes messages ──────────────────────────────────
+  &--me {
+    background-color: var(--color-primary);
+    color: #ffffff;
+    border-radius: var(--radius-lg) var(--radius-lg) var(--radius-sm) var(--radius-lg);
+  }
+
+  // ─── Messages des autres ─────────────────────────
+  &--other {
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    border-radius: var(--radius-lg) var(--radius-lg) var(--radius-lg) var(--radius-sm);
+  }
+
+  &__sender {
+    font-size: var(--font-size-small);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-secondary);
+    padding: 0 var(--space-1);
+  }
+
+  &__time {
+    font-size: var(--font-size-tiny);
+    color: var(--color-text-secondary);
+    padding: 0 var(--space-1);
+  }
+}

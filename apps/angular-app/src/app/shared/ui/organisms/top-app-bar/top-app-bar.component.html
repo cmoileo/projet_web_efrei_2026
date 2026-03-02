@@ -1,0 +1,70 @@
+<header class="lah-app-bar" role="banner">
+  <!-- ─── Côté gauche : retour + titre ─── -->
+  <div class="lah-app-bar__start">
+    @if (showBackButton()) {
+      <button
+        class="lah-app-bar__icon-btn"
+        type="button"
+        aria-label="Retour à la page précédente"
+        matTooltip="Retour"
+        (click)="backClick.emit()"
+      >
+        <lucide-angular [img]="BackIcon" [size]="22" aria-hidden="true" />
+      </button>
+    }
+
+    @if (pageTitle()) {
+      <h1 class="lah-app-bar__title">{{ pageTitle() }}</h1>
+    }
+  </div>
+
+  <!-- ─── Côté droit : actions + avatar ─── -->
+  <div class="lah-app-bar__end">
+    <!-- Recherche -->
+    @if (showSearch()) {
+      <button
+        class="lah-app-bar__icon-btn"
+        type="button"
+        aria-label="Ouvrir la recherche"
+        matTooltip="Rechercher"
+        (click)="searchClick.emit()"
+      >
+        <lucide-angular [img]="SearchIcon" [size]="20" aria-hidden="true" />
+      </button>
+    }
+
+    <!-- Notifications -->
+    <div class="lah-app-bar__notif-wrapper">
+      <button
+        class="lah-app-bar__icon-btn"
+        type="button"
+        [attr.aria-label]="notificationLabel()"
+        matTooltip="Notifications"
+        (click)="notificationClick.emit()"
+      >
+        <lucide-angular [img]="BellIcon" [size]="20" aria-hidden="true" />
+      </button>
+      @if (hasNotifications()) {
+        <span class="lah-app-bar__notif-badge" aria-hidden="true">
+          {{ notificationBadge() }}
+        </span>
+      }
+    </div>
+
+    <!-- Avatar utilisateur -->
+    <button
+      class="lah-app-bar__avatar-btn"
+      type="button"
+      [attr.aria-label]="'Profil utilisateur'"
+      matTooltip="Mon profil"
+      (click)="avatarClick.emit()"
+    >
+      <app-avatar
+        [photoUrl]="userPhotoUrl()"
+        [initials]="userInitials()"
+        [size]="32"
+        [alt]="'Mon profil'"
+      />
+    </button>
+  </div>
+</header>

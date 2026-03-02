@@ -1,0 +1,100 @@
+// ─── Toast molecule ───────────────────────────────────────
+
+:host {
+  display: block;
+}
+
+.lah-toast {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  min-width: 280px;
+  max-width: 480px;
+  background-color: var(--color-surface);
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  color: var(--color-text-primary);
+
+  // ─── Barre colorée latérale ───────────────────────
+  border-left: 4px solid transparent;
+
+  &--success {
+    border-left-color: var(--color-success);
+
+    .lah-toast__icon {
+      color: var(--color-success);
+    }
+  }
+
+  &--error {
+    border-left-color: var(--color-danger);
+
+    .lah-toast__icon {
+      color: var(--color-danger);
+    }
+  }
+
+  &--warning {
+    border-left-color: var(--color-warning);
+
+    .lah-toast__icon {
+      color: var(--color-warning);
+    }
+  }
+
+  &--info {
+    border-left-color: var(--color-primary);
+
+    .lah-toast__icon {
+      color: var(--color-primary);
+    }
+  }
+
+  &__icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  &__message {
+    flex: 1;
+    line-height: 1.4;
+  }
+
+  &__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color var(--transition-fast);
+
+    &:hover {
+      background-color: var(--color-bg);
+      color: var(--color-text-primary);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+  }
+}
+
+// ─── Surcharge du panneau MatSnackBar ─────────────────────
+:host-context(.lah-toast--success) {
+  .mat-mdc-snack-bar-surface {
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+  }
+}

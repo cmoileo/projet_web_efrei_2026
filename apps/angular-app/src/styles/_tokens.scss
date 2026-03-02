@@ -1,0 +1,75 @@
+// ============================================================
+// Design Tokens — Learn@Home
+// Source of truth for all design decisions.
+// Synchronisé avec shared/docs/UI.doc.md
+// NE JAMAIS hardcoder ces valeurs dans les composants.
+// ============================================================
+
+:root {
+  // ─── Couleurs ───────────────────────────────────────────
+  --color-primary: #4f6ef7;
+  --color-primary-light: #eef1fe;
+  --color-secondary: #7c3aed;
+  --color-success: #16a34a;
+  --color-warning: #d97706;
+  --color-danger: #dc2626;
+  --color-bg: #f8f9fb;
+  --color-surface: #ffffff;
+  --color-border: #e4e7ec;
+  --color-text-primary: #111827;
+  --color-text-secondary: #6b7280;
+  --color-text-disabled: #d1d5db;
+
+  // ─── Typographie ────────────────────────────────────────
+  --font-family: 'Inter', system-ui, sans-serif;
+  --font-size-display: 28px;
+  --font-size-heading: 20px;
+  --font-size-subheading: 16px;
+  --font-size-body: 14px;
+  --font-size-small: 12px;
+  --font-size-tiny: 11px;
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  // ─── Espacements (grille 4px) ────────────────────────────
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-8: 48px;
+
+  // ─── Rayons de bordure ──────────────────────────────────
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  // ─── Ombres ─────────────────────────────────────────────
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+
+  // ─── Transitions ────────────────────────────────────────
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+
+  // ─── Layout ─────────────────────────────────────────────
+  --sidebar-width: 240px;
+  --sidebar-width-collapsed: 64px;
+  --app-bar-height: 64px;
+  --content-max-width: 1200px;
+
+  // ─── Overrides Angular Material M3 ──────────────────────
+  // Mappe notre palette sur les tokens système Material
+  --mdc-filled-button-container-color: var(--color-primary);
+  --mdc-filled-button-label-text-color: #ffffff;
+  --mat-ripple-color: rgba(79, 110, 247, 0.15);
+  --mdc-outlined-button-outline-color: var(--color-primary);
+  --mdc-outlined-button-label-text-color: var(--color-primary);
+  --mat-focus-indicator-border-color: var(--color-primary);
+}

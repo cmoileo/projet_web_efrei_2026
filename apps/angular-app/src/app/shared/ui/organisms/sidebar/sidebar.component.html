@@ -1,0 +1,93 @@
+<nav
+  class="lah-sidebar"
+  [class.lah-sidebar--collapsed]="isCollapsed() || collapsed()"
+  aria-label="Navigation principale"
+>
+  <!-- ─── Header : logo + bouton collapse ─── -->
+  <div class="lah-sidebar__header">
+    @if (showLabels()) {
+      <span class="lah-sidebar__logo" aria-label="Learn@Home">
+        Learn<span class="lah-sidebar__logo-accent">@</span>Home
+      </span>
+    }
+    <button
+      class="lah-sidebar__toggle"
+      type="button"
+      [attr.aria-label]="isCollapsed() ? 'Ouvrir la navigation' : 'Réduire la navigation'"
+      [matTooltip]="isCollapsed() ? 'Ouvrir' : 'Réduire'"
+      (click)="toggleCollapse()"
+    >
+      <lucide-angular
+        [img]="isCollapsed() ? MenuIcon : CloseIcon"
+        [size]="20"
+        aria-hidden="true"
+      />
+    </button>
+  </div>
+
+  <!-- ─── Items de navigation ─── -->
+  <ul class="lah-sidebar__nav" role="list">
+    @for (item of navItems(); track item.route) {
+      <li class="lah-sidebar__nav-item">
+        <a
+          class="lah-sidebar__nav-link"
+          [routerLink]="item.route"
+          routerLinkActive="lah-sidebar__nav-link--active"
+          [attr.aria-label]="item.label"
+          [matTooltip]="isCollapsed() || collapsed() ? item.label : ''"
+          matTooltipPosition="right"
+          (click)="onItemClick(item)"
+        >
+          <!-- Icône via nom Lucide fourni dans item.icon -->
+          <span class="lah-sidebar__nav-icon" aria-hidden="true">
+            <lucide-angular [name]="item.icon" [size]="20" />
+          </span>
+
+          @if (showLabels()) {
+            <span class="lah-sidebar__nav-label">{{ item.label }}</span>
+          }
+
+          <!-- Badge numérique (ex: messages non lus) -->
+          @if (item.badge && item.badge > 0) {
+            <span class="lah-sidebar__badge" aria-label="{{ item.badge }} non lu(s)">
+              {{ item.badge > 99 ? '99+' : item.badge }}
+            </span>
+          }
+        </a>
+      </li>
+    }
+  </ul>
+
+  <!-- ─── Séparateur ─── -->
+  <app-divider />
+
+  <!-- ─── Profil utilisateur + déconnexion ─── -->
+  <div class="lah-sidebar__footer">
+    <app-avatar
+      [photoUrl]="userPhotoUrl()"
+      [initials]="userInitials()"
+      [size]="32"
+      [alt]="'Photo de ' + userName()"
+    />
+
+    @if (showLabels()) {
+      <div class="lah-sidebar__user-info">
+        <span class="lah-sidebar__user-name">{{ userName() }}</span>
+        @if (userRole()) {
+          <span class="lah-sidebar__user-role">{{ userRole() }}</span>
+        }
+      </div>
+    }
+
+    <button
+      class="lah-sidebar__logout"
+      type="button"
+      aria-label="Se déconnecter"
+      [matTooltip]="'Déconnexion'"
+      matTooltipPosition="right"
+      (click)="onLogout()"
+    >
+      <lucide-angular [img]="LogOutIcon" [size]="18" aria-hidden="true" />
+    </button>
+  </div>
+</nav>

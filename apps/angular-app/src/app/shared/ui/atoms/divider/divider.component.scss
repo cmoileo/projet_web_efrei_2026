@@ -1,0 +1,16 @@
+// ─── Divider ─────────────────────────────────────────────
+
+:host {
+  display: block;
+}
+
+::ng-deep .mat-divider {
+  border-top-color: var(--color-border) !important;
+  margin: var(--space-4) 0;
+}
+
+::ng-deep .mat-divider.mat-divider-vertical {
+  border-right-color: var(--color-border) !important;
+  margin: 0 var(--space-4);
+  height: 100%;
+}

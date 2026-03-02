@@ -1,0 +1,57 @@
+<div
+  class="lah-task-item"
+  [class.lah-task-item--done]="isDone()"
+  [class.lah-task-item--late]="isLate()"
+>
+  <!-- Checkbox -->
+  <mat-checkbox
+    class="lah-task-item__checkbox"
+    [checked]="isDone()"
+    [attr.aria-label]="'Marquer la tâche \'' + task().title + '\' comme terminée'"
+    (change)="onCheck($event.checked)"
+    color="primary"
+  />
+
+  <!-- Contenu principal -->
+  <div class="lah-task-item__content">
+    <span class="lah-task-item__title">{{ task().title }}</span>
+
+    <div class="lah-task-item__meta">
+      @if (task().assignedTo) {
+        <span class="lah-task-item__assigned">{{ task().assignedTo }}</span>
+      }
+      @if (task().dueDate) {
+        <span class="lah-task-item__due">
+          Échéance : {{ task().dueDate | date: 'dd/MM/yyyy' }}
+        </span>
+      }
+    </div>
+  </div>
+
+  <!-- Badge statut -->
+  <app-badge class="lah-task-item__badge" [status]="task().status" />
+
+  <!-- Actions édition / suppression -->
+  @if (canEdit()) {
+    <div class="lah-task-item__actions">
+      <button
+        class="lah-task-item__action-btn"
+        type="button"
+        matTooltip="Modifier"
+        (click)="onEdit()"
+        [attr.aria-label]="'Modifier la tâche \'' + task().title + '\''"
+      >
+        <lucide-angular [img]="PencilIcon" [size]="16" aria-hidden="true" />
+      </button>
+      <button
+        class="lah-task-item__action-btn lah-task-item__action-btn--danger"
+        type="button"
+        matTooltip="Supprimer"
+        (click)="onDelete()"
+        [attr.aria-label]="'Supprimer la tâche \'' + task().title + '\''"
+      >
+        <lucide-angular [img]="Trash2Icon" [size]="16" aria-hidden="true" />
+      </button>
+    </div>
+  }
+</div>
