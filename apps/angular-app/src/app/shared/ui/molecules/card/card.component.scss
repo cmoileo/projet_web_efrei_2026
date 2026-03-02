@@ -1,0 +1,51 @@
+// ─── Card molecule ────────────────────────────────────────
+
+:host {
+  display: block;
+}
+
+.lah-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--transition-fast);
+
+  &:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  // ─── Variante flat ────────────────────────────────────
+  &--flat {
+    box-shadow: none;
+
+    &:hover {
+      box-shadow: none;
+    }
+  }
+
+  // ─── État cliquable ───────────────────────────────────
+  &--clickable {
+    cursor: pointer;
+    outline: none;
+
+    &:hover {
+      box-shadow: var(--shadow-md);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    &:active {
+      transform: translateY(1px);
+    }
+  }
+
+  // ─── Sans padding ─────────────────────────────────────
+  &--no-padding {
+    padding: 0;
+  }
+}

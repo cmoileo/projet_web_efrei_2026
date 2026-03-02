@@ -1,0 +1,21 @@
+<span class="lah-input" [class.lah-input--has-icon]="!!prefixIcon()">
+  <!-- Icône préfixe -->
+  @if (prefixIcon()) {
+    <span class="lah-input__icon" aria-hidden="true">
+      <lucide-angular [img]="prefixIcon()!" [size]="16" />
+    </span>
+  }
+
+  <input
+    #inputEl
+    class="lah-input__field"
+    [id]="inputId() ?? undefined"
+    [type]="type()"
+    [placeholder]="placeholder()"
+    [disabled]="isDisabled() || disabled()"
+    [value]="internalValue()"
+    [attr.autocomplete]="autocomplete()"
+    (input)="onInput($event)"
+    (blur)="onBlur()"
+  />
+</span>

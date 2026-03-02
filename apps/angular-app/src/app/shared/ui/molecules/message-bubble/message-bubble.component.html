@@ -1,0 +1,30 @@
+<div
+  class="lah-bubble-wrapper"
+  [class.lah-bubble-wrapper--me]="isMe()"
+  [class.lah-bubble-wrapper--other]="!isMe()"
+>
+  <!-- Nom de l'expéditeur (only for "other" side) -->
+  @if (!isMe() && senderName()) {
+    <span class="lah-bubble__sender">{{ senderName() }}</span>
+  }
+
+  <div
+    class="lah-bubble"
+    [class.lah-bubble--me]="isMe()"
+    [class.lah-bubble--other]="!isMe()"
+    role="article"
+    [attr.aria-label]="(isMe() ? 'Vous : ' : (senderName() ?? 'Autre') + ' : ') + message()"
+  >
+    {{ message() }}
+  </div>
+
+  <!-- Heure d'envoi -->
+  @if (sentAt()) {
+    <time
+      class="lah-bubble__time"
+      [dateTime]="sentAt() | date: 'yyyy-MM-ddTHH:mm'"
+    >
+      {{ sentAt() | date: 'HH:mm' }}
+    </time>
+  }
+</div>

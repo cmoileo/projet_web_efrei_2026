@@ -1,0 +1,38 @@
+<div
+  class="lah-modal"
+  [class]="'lah-modal lah-modal--' + size()"
+  role="dialog"
+  aria-modal="true"
+  [attr.aria-labelledby]="title() ? 'modal-title' : null"
+>
+  <!-- ─── Header ─── -->
+  <div class="lah-modal__header">
+    @if (title()) {
+      <h2 class="lah-modal__title" id="modal-title">{{ title() }}</h2>
+    }
+
+    <!-- Slot pour contenu additionnel dans le header -->
+    <ng-content select="[headerExtra]" />
+
+    @if (showClose()) {
+      <button
+        class="lah-modal__close"
+        type="button"
+        aria-label="Fermer la fenêtre"
+        (click)="closeModal.emit()"
+      >
+        <lucide-angular [img]="CloseIcon" [size]="20" aria-hidden="true" />
+      </button>
+    }
+  </div>
+
+  <!-- ─── Corps ─── -->
+  <div class="lah-modal__body">
+    <ng-content />
+  </div>
+
+  <!-- ─── Footer : actions projetées ─── -->
+  <div class="lah-modal__footer">
+    <ng-content select="[actions]" />
+  </div>
+</div>

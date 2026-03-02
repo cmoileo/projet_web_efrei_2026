@@ -1,0 +1,38 @@
+// ─── Badge de statut ─────────────────────────────────────
+// Chip en pill shape avec couleur sémantique par statut.
+
+:host {
+  display: inline-flex;
+}
+
+.lah-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-tiny);
+  font-weight: var(--font-weight-medium);
+  line-height: 1.6;
+  white-space: nowrap;
+
+  // ─── Variantes par statut ─────────────────────────────
+  &--todo {
+    background-color: #f3f4f6;
+    color: var(--color-text-secondary);
+  }
+
+  &--in_progress {
+    background-color: #fef3c7;
+    color: #d97706;
+  }
+
+  &--done {
+    background-color: #dcfce7;
+    color: #16a34a;
+  }
+
+  &--late {
+    background-color: #fee2e2;
+    color: #dc2626;
+  }
+}

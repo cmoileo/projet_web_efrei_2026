@@ -1,0 +1,117 @@
+// ─── Task Item molecule ───────────────────────────────────
+
+:host {
+  display: block;
+}
+
+.lah-task-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  transition: background-color var(--transition-fast);
+  min-height: 56px;
+
+  &:hover {
+    background-color: var(--color-bg);
+  }
+
+  // ─── État terminé ───────────────────────────────────
+  &--done {
+    .lah-task-item__title {
+      text-decoration: line-through;
+      opacity: 0.6;
+    }
+  }
+
+  // ─── État en retard ─────────────────────────────────
+  &--late {
+    border-left: 3px solid var(--color-danger);
+    padding-left: calc(var(--space-4) - 3px);
+  }
+
+  &__checkbox {
+    flex-shrink: 0;
+    // Material checkbox override
+    ::ng-deep .mdc-checkbox__background {
+      border-color: var(--color-border) !important;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__title {
+    font-size: var(--font-size-body);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__meta {
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  &__assigned,
+  &__due {
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+  }
+
+  &__badge {
+    flex-shrink: 0;
+  }
+
+  &__actions {
+    display: flex;
+    gap: var(--space-1);
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+
+    .lah-task-item:hover & {
+      opacity: 1;
+    }
+  }
+
+  &__action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    border: none;
+    background: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+    min-width: 44px;
+    min-height: 44px;
+
+    &:hover {
+      background-color: var(--color-bg);
+      color: var(--color-text-primary);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    &--danger:hover {
+      background-color: #fee2e2;
+      color: var(--color-danger);
+    }
+  }
+}
