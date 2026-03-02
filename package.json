@@ -1,0 +1,12 @@
+{
+  "name": "projet-web-efrei-2026",
+  "private": true,
+  "scripts": {
+    "angular": "pnpm --filter angular-app",
+    "dev:angular": "pnpm --filter angular-app start"
+  },
+  "engines": {
+    "pnpm": ">=8",
+    "node": ">=20"
+  }
+}

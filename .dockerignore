@@ -1,0 +1,8 @@
+node_modules
+apps/angular-app/node_modules
+apps/angular-app/dist
+apps/angular-app/.angular
+apps/flutter-app/.dart_tool
+apps/flutter-app/build
+.git
+*.log
