@@ -1,0 +1,43 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Angular build output
+apps/angular-app/dist/
+apps/angular-app/.angular/
+
+# Flutter build output
+apps/flutter-app/build/
+apps/flutter-app/.dart_tool/
+apps/flutter-app/.flutter-plugins
+apps/flutter-app/.flutter-plugins-dependencies
+
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+apps/angular-app/src/environments/environment.ts
+apps/angular-app/src/environments/environment.prod.ts
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# IDE & OS
+.idea/
+.vscode/settings.json
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Cache
+.cache/
+*.tsbuildinfo
