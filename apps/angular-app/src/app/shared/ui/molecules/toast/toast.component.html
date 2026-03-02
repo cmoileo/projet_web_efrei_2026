@@ -1,0 +1,22 @@
+<div class="lah-toast" [class]="'lah-toast lah-toast--' + data.type" role="alert" aria-live="assertive">
+  <!-- Icône contextuelle -->
+  <lucide-angular
+    class="lah-toast__icon"
+    [img]="icon()"
+    [size]="20"
+    aria-hidden="true"
+  />
+
+  <!-- Message -->
+  <span class="lah-toast__message">{{ data.message }}</span>
+
+  <!-- Bouton fermer -->
+  <button
+    class="lah-toast__close"
+    type="button"
+    aria-label="Fermer la notification"
+    (click)="close()"
+  >
+    <lucide-angular [img]="CloseIcon" [size]="16" aria-hidden="true" />
+  </button>
+</div>
