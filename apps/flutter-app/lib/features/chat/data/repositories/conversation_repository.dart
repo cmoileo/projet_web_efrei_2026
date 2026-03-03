@@ -161,6 +161,23 @@ class ConversationRepository {
     return ref.id;
   }
 
+  Stream<int> watchTotalUnreadCount(String userId) {
+    return getConversations(userId).map(
+      (conversations) =>
+          conversations.fold(0, (total, c) => total + c.unreadCount),
+    );
+  }
+
+  Stream<List<Conversation>> watchUnreadConversations(
+    String userId, {
+    int limit = 3,
+  }) {
+    return getConversations(userId).map(
+      (conversations) =>
+          conversations.where((c) => c.unreadCount > 0).take(limit).toList(),
+    );
+  }
+
   Future<String> createGroupConversation(
     String benevoleId,
     String name,

@@ -7,7 +7,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/app_typography.dart';
 import '../../../features/auth/providers/auth_provider.dart';
-import '../../../features/dashboard/presentation/providers/dashboard_provider.dart';
+import '../../../features/chat/presentation/providers/chat_provider.dart';
 import '../atoms/avatar_initials.dart';
 import 'app_bottom_nav.dart';
 import 'app_top_bar.dart';
@@ -85,7 +85,7 @@ class MainShell extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsync = ref.watch(currentUserModelProvider);
-    final unread = ref.watch(dashboardDataProvider).unreadMessages;
+    final unread = ref.watch(totalUnreadCountProvider).valueOrNull ?? 0;
 
     return Scaffold(
       backgroundColor: AppColors.background,

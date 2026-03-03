@@ -77,3 +77,31 @@ final studentsForCurrentVolunteerProvider =
   final userService = UserService(ref.watch(firestoreProvider));
   return userService.getStudentsForVolunteer(user.uid);
 });
+
+final totalUnreadCountProvider = StreamProvider<int>((ref) {
+  final userAsync = ref.watch(currentUserModelProvider);
+  return userAsync.when(
+    data: (user) {
+      if (user == null) return const Stream.empty();
+      return ref
+          .watch(conversationRepositoryProvider)
+          .watchTotalUnreadCount(user.uid);
+    },
+    loading: () => const Stream.empty(),
+    error: (_, __) => const Stream.empty(),
+  );
+});
+
+final unreadConversationsProvider = StreamProvider<List<Conversation>>((ref) {
+  final userAsync = ref.watch(currentUserModelProvider);
+  return userAsync.when(
+    data: (user) {
+      if (user == null) return const Stream.empty();
+      return ref
+          .watch(conversationRepositoryProvider)
+          .watchUnreadConversations(user.uid);
+    },
+    loading: () => const Stream.empty(),
+    error: (_, __) => const Stream.empty(),
+  );
+});

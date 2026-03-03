@@ -52,6 +52,11 @@ final taskDetailProvider =
   return ref.read(taskRepositoryProvider).getTaskById(taskId);
 });
 
+final tasksByStudentIdProvider =
+    FutureProvider.family<List<Task>, String>((ref, studentId) async {
+  return ref.read(taskRepositoryProvider).getTasksByEleve(studentId);
+});
+
 // ─── Filtre statut ────────────────────────────────────────────────────────────
 
 /// Filtre actif sur la liste des tâches.

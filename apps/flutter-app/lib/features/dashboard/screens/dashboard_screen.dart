@@ -12,6 +12,7 @@ import '../../auth/providers/auth_provider.dart';
 import '../presentation/providers/dashboard_provider.dart';
 import '../presentation/widgets/events_card.dart';
 import '../presentation/widgets/messages_card.dart';
+import '../presentation/widgets/students_card.dart';
 import '../presentation/widgets/task_summary_card.dart';
 import '../presentation/widgets/volunteer_card.dart';
 
@@ -43,13 +44,19 @@ class DashboardScreen extends ConsumerWidget {
                     AppTypography.body.copyWith(color: AppColors.textSecondary),
               ),
               const SizedBox(height: AppSpacing.s5),
-              VolunteerCard(volunteer: data.volunteer),
-              const SizedBox(height: AppSpacing.s4),
-              TaskSummaryCard(summary: data.taskSummary),
-              const SizedBox(height: AppSpacing.s4),
-              EventsCard(events: data.events),
-              const SizedBox(height: AppSpacing.s4),
-              MessagesCard(unreadCount: data.unreadMessages),
+              if (user.role == UserRole.volunteer) ...[
+                const StudentsCard(),
+                const SizedBox(height: AppSpacing.s4),
+                const MessagesCard(),
+              ] else ...[
+                const VolunteerCard(),
+                const SizedBox(height: AppSpacing.s4),
+                const TaskSummaryCard(),
+                const SizedBox(height: AppSpacing.s4),
+                EventsCard(events: data.events),
+                const SizedBox(height: AppSpacing.s4),
+                const MessagesCard(),
+              ],
               const SizedBox(height: AppSpacing.s5),
               Text('Actions rapides', style: AppTypography.subheading),
               const SizedBox(height: AppSpacing.s3),
