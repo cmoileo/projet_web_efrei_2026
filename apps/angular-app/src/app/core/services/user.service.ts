@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { collection, doc, getDoc, setDoc, Timestamp } from 'firebase/firestore';
+import { collection, doc, getDocs, getDoc, query, setDoc, Timestamp, where } from 'firebase/firestore';
 import { FIREBASE_FIRESTORE } from '../tokens/firebase.tokens';
 import { FIRESTORE_COLLECTIONS } from '../constants/firestore-collections';
 import type { User } from '../models/user.model';
@@ -23,12 +23,13 @@ export class UserService {
       role: data['role'] as 'student' | 'volunteer',
       createdAt: (data['created_at'] as Timestamp).toDate(),
       updatedAt: (data['updated_at'] as Timestamp).toDate(),
+      volunteerId: data['volunteer_id'] as string | undefined,
     };
   }
 
   async createUser(user: User): Promise<void> {
     const ref = doc(collection(this.firestore, FIRESTORE_COLLECTIONS.USERS), user.uid);
-    await setDoc(ref, {
+    const data: Record<string, unknown> = {
       uid: user.uid,
       first_name: user.firstName,
       last_name: user.lastName,
@@ -38,6 +39,33 @@ export class UserService {
       role: user.role,
       created_at: Timestamp.fromDate(user.createdAt),
       updated_at: Timestamp.fromDate(user.updatedAt),
-    });
+    };
+    if (user.role === 'student') {
+      data['volunteer_id'] = user.volunteerId ?? null;
+    }
+    await setDoc(ref, data);
+  }
+
+  async getRandomVolunteer(): Promise<User | null> {
+    const q = query(
+      collection(this.firestore, FIRESTORE_COLLECTIONS.USERS),
+      where('role', '==', 'volunteer'),
+    );
+    const snap = await getDocs(q);
+    if (snap.empty) return null;
+    const docs = snap.docs;
+    const randomDoc = docs[Math.floor(Math.random() * docs.length)];
+    const data = randomDoc.data();
+    return {
+      uid: randomDoc.id,
+      firstName: data['first_name'] as string,
+      lastName: data['last_name'] as string,
+      nickname: data['nickname'] as string,
+      email: data['email'] as string,
+      birthdate: (data['birthdate'] as Timestamp).toDate(),
+      role: 'volunteer',
+      createdAt: (data['created_at'] as Timestamp).toDate(),
+      updatedAt: (data['updated_at'] as Timestamp).toDate(),
+    };
   }
 }
