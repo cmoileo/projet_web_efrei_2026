@@ -1,7 +1,7 @@
 /// Organism : AppBottomNav — Learn@Home
 ///
 /// Barre de navigation inférieure Material 3 conforme à la charte UI mobile.
-/// Maximum 4 destinations. Icônes Lucide + labels. Indicateur actif en color-primary.
+/// Maximum 5 destinations. Icônes Lucide + labels. Indicateur actif en color-primary.
 ///
 /// Utilise [NavigationBar] Material 3 (pas [BottomNavigationBar]).
 ///
@@ -56,9 +56,9 @@ class AppBottomNav extends StatelessWidget {
     required this.selectedIndex,
     required this.onDestinationSelected,
   }) : assert(
-         destinations.length >= 2 && destinations.length <= 4,
-         'AppBottomNav accepte entre 2 et 4 destinations.',
-       );
+          destinations.length >= 2 && destinations.length <= 5,
+          'AppBottomNav accepte entre 2 et 5 destinations.',
+        );
 
   final List<AppNavDestination> destinations;
   final int selectedIndex;

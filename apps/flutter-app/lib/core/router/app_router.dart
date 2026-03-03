@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,7 +6,12 @@ import '../../features/auth/providers/auth_provider.dart';
 import '../../features/auth/screens/forgot_password_screen.dart';
 import '../../features/auth/screens/login_screen.dart';
 import '../../features/auth/screens/register_screen.dart';
+import '../../features/calendar/screens/calendar_screen.dart';
+import '../../features/chat/screens/chat_screen.dart';
 import '../../features/dashboard/screens/dashboard_screen.dart';
+import '../../features/profile/screens/profile_screen.dart';
+import '../../features/tasks/screens/tasks_screen.dart';
+import '../../shared/widgets/organisms/main_shell.dart';
 
 final _authRoutes = {'/login', '/register', '/forgot-password'};
 
@@ -33,9 +37,33 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/forgot-password',
         builder: (_, __) => const ForgotPasswordScreen(),
       ),
-      GoRoute(
-        path: '/dashboard',
-        builder: (_, __) => const DashboardScreen(),
+      ShellRoute(
+        builder: (context, state, child) => MainShell(
+          currentLocation: state.matchedLocation,
+          child: child,
+        ),
+        routes: [
+          GoRoute(
+            path: '/dashboard',
+            builder: (_, __) => const DashboardScreen(),
+          ),
+          GoRoute(
+            path: '/tasks',
+            builder: (_, __) => const TasksScreen(),
+          ),
+          GoRoute(
+            path: '/calendar',
+            builder: (_, __) => const CalendarScreen(),
+          ),
+          GoRoute(
+            path: '/chat',
+            builder: (_, __) => const ChatScreen(),
+          ),
+          GoRoute(
+            path: '/profile',
+            builder: (_, __) => const ProfileScreen(),
+          ),
+        ],
       ),
     ],
     errorBuilder: (_, state) => Scaffold(

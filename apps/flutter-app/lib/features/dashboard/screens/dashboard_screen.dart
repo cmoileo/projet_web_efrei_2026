@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../../core/theme/app_colors.dart';
 import '../../../core/theme/app_spacing.dart';
 import '../../../core/theme/app_typography.dart';
-import '../../../shared/widgets/widgets.dart';
+import '../../../shared/widgets/atoms/app_button.dart';
 import '../../auth/providers/auth_provider.dart';
+import '../presentation/providers/dashboard_provider.dart';
+import '../presentation/widgets/events_card.dart';
+import '../presentation/widgets/messages_card.dart';
+import '../presentation/widgets/task_summary_card.dart';
+import '../presentation/widgets/volunteer_card.dart';
 
 class DashboardScreen extends ConsumerWidget {
   const DashboardScreen({super.key});
@@ -14,106 +20,94 @@ class DashboardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsync = ref.watch(currentUserModelProvider);
+    final data = ref.watch(dashboardDataProvider);
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: Text('Tableau de bord', style: AppTypography.subheading),
-        backgroundColor: AppColors.surface,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(LucideIcons.logOut, color: AppColors.textPrimary),
-            onPressed: () => ref.read(authNotifierProvider.notifier).logout(),
-          ),
-        ],
-      ),
-      body: SafeArea(
-        child: Padding(
+    return userAsync.when(
+      data: (user) {
+        if (user == null) return const SizedBox.shrink();
+        return SingleChildScrollView(
           padding: const EdgeInsets.all(AppSpacing.pagePadding),
-          child: userAsync.when(
-            data: (user) {
-              debugPrint(
-                  '[Dashboard] currentUserModelProvider data: ${user?.uid ?? "null"}');
-              // user == null → pas connecté, le router redirige vers /login
-              if (user == null) return const SizedBox.shrink();
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: AppSpacing.s2),
+              Text(
+                'Bonjour, ${user.firstName} 👋',
+                style: AppTypography.heading,
+              ),
+              const SizedBox(height: AppSpacing.s1),
+              Text(
+                'Voici un résumé de votre activité du jour.',
+                style:
+                    AppTypography.body.copyWith(color: AppColors.textSecondary),
+              ),
+              const SizedBox(height: AppSpacing.s5),
+              VolunteerCard(volunteer: data.volunteer),
+              const SizedBox(height: AppSpacing.s4),
+              TaskSummaryCard(summary: data.taskSummary),
+              const SizedBox(height: AppSpacing.s4),
+              EventsCard(events: data.events),
+              const SizedBox(height: AppSpacing.s4),
+              MessagesCard(unreadCount: data.unreadMessages),
+              const SizedBox(height: AppSpacing.s5),
+              Text('Actions rapides', style: AppTypography.subheading),
+              const SizedBox(height: AppSpacing.s3),
+              Row(
                 children: [
-                  const SizedBox(height: AppSpacing.s4),
-                  Row(
-                    children: [
-                      AvatarInitials(
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        nickname: user.nickname,
-                        size: AvatarSize.lg,
-                      ),
-                      const SizedBox(width: AppSpacing.s4),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Bonjour, ${user.firstName} !',
-                            style: AppTypography.heading,
-                          ),
-                          Text(
-                            '@${user.nickname}',
-                            style: AppTypography.small,
-                          ),
-                        ],
-                      ),
-                    ],
+                  Expanded(
+                    child: AppButton(
+                      label: 'Mes tâches',
+                      icon: LucideIcons.checkSquare,
+                      onPressed: () => context.go('/tasks'),
+                    ),
                   ),
-                  const SizedBox(height: AppSpacing.s6),
-                  Text(
-                    'Bienvenue sur Learn@Home.',
-                    style: AppTypography.body.copyWith(
-                      color: AppColors.textSecondary,
+                  const SizedBox(width: AppSpacing.s3),
+                  Expanded(
+                    child: AppButton(
+                      label: 'Ouvrir le chat',
+                      icon: LucideIcons.messageCircle,
+                      variant: AppButtonVariant.secondary,
+                      onPressed: () => context.go('/chat'),
                     ),
                   ),
                 ],
-              );
-            },
-            loading: () {
-              debugPrint('[Dashboard] currentUserModelProvider \u2192 loading');
-              return const Center(child: CircularProgressIndicator());
-            },
-            error: (e, stack) {
-              debugPrint('[Dashboard] currentUserModelProvider → error: $e');
-              return Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(AppSpacing.pagePadding),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const Icon(Icons.error_outline,
-                          size: 48, color: AppColors.danger),
-                      const SizedBox(height: AppSpacing.s4),
-                      Text(
-                        'Profil introuvable',
-                        style: AppTypography.heading,
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: AppSpacing.s2),
-                      Text(
-                        'Votre compte Firebase existe mais aucun profil n\'a été trouvé dans la base de données.',
-                        style: AppTypography.body
-                            .copyWith(color: AppColors.textSecondary),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: AppSpacing.s6),
-                      ElevatedButton.icon(
-                        onPressed: () =>
-                            ref.read(authNotifierProvider.notifier).logout(),
-                        icon: const Icon(LucideIcons.logOut),
-                        label: const Text('Se déconnecter'),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
+              ),
+              const SizedBox(height: AppSpacing.s8),
+            ],
+          ),
+        );
+      },
+      loading: () => const Center(child: CircularProgressIndicator()),
+      error: (e, _) => Center(
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.pagePadding),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.error_outline,
+                  size: 48, color: AppColors.danger),
+              const SizedBox(height: AppSpacing.s4),
+              Text(
+                'Profil introuvable',
+                style: AppTypography.heading,
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: AppSpacing.s2),
+              Text(
+                'Impossible de charger votre profil. Veuillez vous reconnecter.',
+                style:
+                    AppTypography.body.copyWith(color: AppColors.textSecondary),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: AppSpacing.s5),
+              AppButton(
+                label: 'Se déconnecter',
+                icon: LucideIcons.logOut,
+                variant: AppButtonVariant.danger,
+                onPressed: () =>
+                    ref.read(authNotifierProvider.notifier).logout(),
+              ),
+            ],
           ),
         ),
       ),
