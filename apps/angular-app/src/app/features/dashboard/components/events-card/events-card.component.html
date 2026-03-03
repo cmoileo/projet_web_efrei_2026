@@ -1,0 +1,27 @@
+<app-card>
+  <div class="events-card">
+    <div class="events-card__header">
+      <lucide-angular [img]="CalendarIcon" [size]="20" class="events-card__icon" aria-hidden="true" />
+      <h3 class="events-card__title">Prochains événements</h3>
+    </div>
+
+    @if (hasEvents()) {
+      <ul class="events-card__list" role="list">
+        @for (event of events(); track event.id) {
+          <li class="events-card__item">
+            <div class="events-card__date-badge" aria-hidden="true">
+              <span class="events-card__date-day">{{ event.date | date:'d' }}</span>
+              <span class="events-card__date-month">{{ event.date | date:'MMM' }}</span>
+            </div>
+            <div class="events-card__event-info">
+              <span class="events-card__event-title">{{ event.title }}</span>
+              <span class="events-card__event-time">{{ event.date | date:'HH:mm' }}</span>
+            </div>
+          </li>
+        }
+      </ul>
+    } @else {
+      <p class="events-card__empty">Aucun événement à venir</p>
+    }
+  </div>
+</app-card>

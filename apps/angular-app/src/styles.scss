@@ -112,6 +112,15 @@ a {
   --mdc-dialog-supporting-text-font: var(--font-family);
 }
 
+:ng-deep .mdc-button__label {
+  display: flex !important
+}
+
+.mdc-button__label {
+  display: flex !important;
+  gap: 8px
+}
+
 .mat-mdc-form-field,
 .mdc-text-field--outlined,
 .mat-mdc-dialog-container {
