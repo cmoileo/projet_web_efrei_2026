@@ -1,5 +1,60 @@
-<div class="placeholder-page">
-  <lucide-angular [img]="MessageCircleIcon" [size]="52" class="placeholder-page__icon" aria-hidden="true" />
-  <h2 class="placeholder-page__title">Messages</h2>
-  <p class="placeholder-page__text">Cette section sera disponible prochainement.</p>
+<div class="conversations-page">
+  <header class="conversations-page__header">
+    <h1 class="conversations-page__title">Messages</h1>
+    @if (isVolunteer()) {
+      <div class="conversations-page__actions">
+        <button class="conversations-page__btn" (click)="openNewDirectConversation()" type="button">
+          <lucide-angular [img]="UserIcon" [size]="16" aria-hidden="true" />
+          Conversation directe
+        </button>
+        <button class="conversations-page__btn conversations-page__btn--secondary" (click)="openNewGroupConversation()" type="button">
+          <lucide-angular [img]="UsersIcon" [size]="16" aria-hidden="true" />
+          Nouveau groupe
+        </button>
+      </div>
+    }
+  </header>
+
+  <div class="conversations-page__list">
+    @if (loading()) {
+      <div class="conversations-page__loading">
+        @for (_ of [1, 2, 3]; track $index) {
+          <div class="conversations-page__skeleton"></div>
+        }
+      </div>
+    } @else if (error()) {
+      <div class="conversations-page__empty">
+        <lucide-angular [img]="MessageCircleIcon" [size]="48" aria-hidden="true" class="conversations-page__empty-icon" />
+        <p class="conversations-page__empty-text">{{ error() }}</p>
+      </div>
+    } @else if (conversations().length === 0) {
+      <div class="conversations-page__empty">
+        <lucide-angular [img]="MessageCircleIcon" [size]="48" aria-hidden="true" class="conversations-page__empty-icon" />
+        <p class="conversations-page__empty-title">Aucune conversation</p>
+        <p class="conversations-page__empty-text">
+          @if (isVolunteer()) {
+            Créez une conversation directe ou un groupe pour commencer.
+          } @else {
+            Vos conversations apparaîtront ici.
+          }
+        </p>
+      </div>
+    } @else {
+      @for (conv of conversations(); track conv.id) {
+        <div
+          class="conversations-page__item"
+          (click)="navigateTo(conv)"
+          (keydown.enter)="navigateTo(conv)"
+          tabindex="0"
+          role="button"
+          [attr.aria-label]="getDisplayName(conv)"
+        >
+          <app-conversation-tile
+            [conversation]="conv"
+            [displayName]="getDisplayName(conv)"
+          />
+        </div>
+      }
+    }
+  </div>
 </div>

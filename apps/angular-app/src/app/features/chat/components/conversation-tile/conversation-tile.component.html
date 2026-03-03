@@ -1,0 +1,24 @@
+<div class="conversation-tile">
+  <div class="conversation-tile__avatar" [class.conversation-tile__avatar--group]="conversation.type === 'group'">
+    @if (conversation.type === 'group') {
+      <lucide-angular [img]="UsersIcon" [size]="20" aria-hidden="true" />
+    } @else {
+      <span class="conversation-tile__initials">{{ initials }}</span>
+    }
+  </div>
+
+  <div class="conversation-tile__body">
+    <div class="conversation-tile__header">
+      <span class="conversation-tile__name">{{ displayName }}</span>
+      <span class="conversation-tile__time">{{ conversation.updatedAt | date: 'HH:mm' }}</span>
+    </div>
+    <div class="conversation-tile__footer">
+      <span class="conversation-tile__last-message">
+        {{ conversation.lastMessage ?? 'Aucun message' }}
+      </span>
+      @if (conversation.unreadCount > 0) {
+        <span class="conversation-tile__badge">{{ conversation.unreadCount }}</span>
+      }
+    </div>
+  </div>
+</div>

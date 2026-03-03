@@ -1,0 +1,65 @@
+<div class="conversation-detail">
+  <header class="conversation-detail__header">
+    <button class="conversation-detail__back" (click)="goBack()" type="button" aria-label="Retour">
+      <lucide-angular [img]="ArrowLeftIcon" [size]="20" aria-hidden="true" />
+    </button>
+    <div class="conversation-detail__title-wrap">
+      <span class="conversation-detail__title">{{ displayTitle() }}</span>
+      @if (conversation()?.type === 'group') {
+        <span class="conversation-detail__badge">Groupe</span>
+      }
+    </div>
+  </header>
+
+  <div class="conversation-detail__messages">
+    @if (hasMore()) {
+      <div class="conversation-detail__load-more">
+        <button
+          class="conversation-detail__load-more-btn"
+          (click)="loadMore()"
+          type="button"
+        >
+          <lucide-angular [img]="ChevronsUpIcon" [size]="14" aria-hidden="true" />
+          Charger les messages précédents
+        </button>
+      </div>
+    }
+
+    @if (messages().length === 0) {
+      <div class="conversation-detail__empty">
+        <p class="conversation-detail__empty-text">Aucun message. Commencez la conversation !</p>
+      </div>
+    } @else {
+      @for (msg of messages(); track msg.id; let i = $index) {
+        <app-message-bubble
+          [message]="msg"
+          [isOwn]="isOwn(msg)"
+          [showAvatar]="showAvatar(i)"
+          [allMembers]="allMembers"
+          [users]="users()"
+        />
+      }
+    }
+  </div>
+
+  <div class="conversation-detail__input-bar">
+    <textarea
+      class="conversation-detail__textarea"
+      placeholder="Écrire un message…"
+      rows="1"
+      [value]="messageInput()"
+      [disabled]="sending()"
+      (input)="onInputChange($event)"
+      (keydown)="onKeydown($event)"
+    ></textarea>
+    <button
+      class="conversation-detail__send"
+      (click)="onSend()"
+      [disabled]="!messageInput().trim() || sending()"
+      type="button"
+      aria-label="Envoyer"
+    >
+      <lucide-angular [img]="SendIcon" [size]="18" aria-hidden="true" />
+    </button>
+  </div>
+</div>
