@@ -37,6 +37,9 @@ import {
   KeyRound,
   ArrowLeft,
   AlertCircle,
+  Users,
+  Send,
+  ChevronsUp,
 } from 'lucide-angular';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
@@ -90,6 +93,9 @@ export const appConfig: ApplicationConfig = {
         KeyRound,
         ArrowLeft,
         AlertCircle,
+        Users,
+        Send,
+        ChevronsUp,
       }),
     },
   ],

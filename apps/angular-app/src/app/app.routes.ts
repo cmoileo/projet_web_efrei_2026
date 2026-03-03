@@ -39,10 +39,8 @@ export const routes: Routes = [
       },
       {
         path: 'chat',
-        loadComponent: () =>
-          import('./features/chat/chat.component').then(
-            (m) => m.ChatComponent,
-          ),
+        loadChildren: () =>
+          import('./features/chat/chat.routes').then((m) => m.CHAT_ROUTES),
       },
       {
         path: 'profile',

@@ -1,0 +1,41 @@
+<h2 mat-dialog-title class="modal__title">Nouvelle conversation directe</h2>
+
+<mat-dialog-content class="modal__content">
+  @if (loading()) {
+    <div class="modal__loading">Chargement des élèves…</div>
+  } @else if (error()) {
+    <p class="modal__error">{{ error() }}</p>
+  } @else if (students().length === 0) {
+    <p class="modal__empty">Aucun élève associé à votre compte.</p>
+  } @else {
+    <p class="modal__label">Choisissez un élève :</p>
+    <ul class="modal__student-list">
+      @for (student of students(); track student.uid) {
+        <li
+          class="modal__student-item"
+          [class.modal__student-item--selected]="selectedStudentId() === student.uid"
+          (click)="selectStudent(student.uid)"
+          (keydown.enter)="selectStudent(student.uid)"
+          tabindex="0"
+          role="option"
+          [attr.aria-selected]="selectedStudentId() === student.uid"
+        >
+          <span class="modal__student-avatar">{{ student.firstName[0] }}{{ student.lastName[0] }}</span>
+          <span class="modal__student-name">{{ student.firstName }} {{ student.lastName }}</span>
+        </li>
+      }
+    </ul>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions class="modal__actions">
+  <button mat-button (click)="onCancel()" [disabled]="submitting()">Annuler</button>
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="onConfirm()"
+    [disabled]="!selectedStudentId() || submitting()"
+  >
+    {{ submitting() ? 'Création…' : 'Créer' }}
+  </button>
+</mat-dialog-actions>

@@ -1,0 +1,22 @@
+<div class="message-bubble" [class.message-bubble--own]="isOwn">
+  @if (!isOwn && showAvatar) {
+    <div class="message-bubble__avatar">
+      <span class="message-bubble__initials">{{ senderInitials }}</span>
+    </div>
+  } @else if (!isOwn) {
+    <div class="message-bubble__avatar-spacer"></div>
+  }
+
+  <div class="message-bubble__content">
+    @if (!isOwn && showAvatar) {
+      <span class="message-bubble__sender">{{ senderName }}</span>
+    }
+    <div class="message-bubble__bubble">
+      <p class="message-bubble__text">{{ message.content }}</p>
+      <span class="message-bubble__time">{{ message.sentAt | date: 'HH:mm' }}</span>
+    </div>
+    @if (isOwn && isReadByAll) {
+      <span class="message-bubble__read">Lu</span>
+    }
+  </div>
+</div>

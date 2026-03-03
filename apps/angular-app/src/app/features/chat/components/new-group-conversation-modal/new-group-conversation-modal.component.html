@@ -1,0 +1,55 @@
+<h2 mat-dialog-title class="modal__title">Nouveau groupe</h2>
+
+<mat-dialog-content class="modal__content">
+  <div class="modal__field">
+    <label for="group-name" class="modal__label">Nom du groupe</label>
+    <input
+      id="group-name"
+      type="text"
+      class="modal__input"
+      placeholder="Ex : Maths 3ème"
+      [(ngModel)]="groupName"
+      [disabled]="submitting()"
+      maxlength="60"
+    />
+  </div>
+
+  @if (loading()) {
+    <div class="modal__loading">Chargement des élèves…</div>
+  } @else if (error()) {
+    <p class="modal__error">{{ error() }}</p>
+  } @else if (students().length === 0) {
+    <p class="modal__empty">Aucun élève associé à votre compte.</p>
+  } @else {
+    <p class="modal__label">Sélectionnez les élèves :</p>
+    <ul class="modal__student-list">
+      @for (student of students(); track student.uid) {
+        <li
+          class="modal__student-item"
+          [class.modal__student-item--selected]="isSelected(student.uid)"
+          (click)="toggleStudent(student.uid)"
+          (keydown.enter)="toggleStudent(student.uid)"
+          tabindex="0"
+          role="checkbox"
+          [attr.aria-checked]="isSelected(student.uid)"
+        >
+          <span class="modal__student-avatar">{{ student.firstName[0] }}{{ student.lastName[0] }}</span>
+          <span class="modal__student-name">{{ student.firstName }} {{ student.lastName }}</span>
+          <span class="modal__checkbox" [class.modal__checkbox--checked]="isSelected(student.uid)"></span>
+        </li>
+      }
+    </ul>
+  }
+</mat-dialog-content>
+
+<mat-dialog-actions class="modal__actions">
+  <button mat-button (click)="onCancel()" [disabled]="submitting()">Annuler</button>
+  <button
+    mat-flat-button
+    color="primary"
+    (click)="onConfirm()"
+    [disabled]="!isValid || submitting()"
+  >
+    {{ submitting() ? 'Création…' : 'Créer le groupe' }}
+  </button>
+</mat-dialog-actions>
