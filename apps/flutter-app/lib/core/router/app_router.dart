@@ -7,6 +7,7 @@ import '../../features/auth/screens/forgot_password_screen.dart';
 import '../../features/auth/screens/login_screen.dart';
 import '../../features/auth/screens/register_screen.dart';
 import '../../features/calendar/screens/calendar_screen.dart';
+import '../../features/chat/presentation/pages/conversation_detail_page.dart';
 import '../../features/chat/screens/chat_screen.dart';
 import '../../features/dashboard/screens/dashboard_screen.dart';
 import '../../features/profile/screens/profile_screen.dart';
@@ -75,6 +76,12 @@ final appRouterProvider = Provider<GoRouter>((ref) {
         path: '/tasks/:id',
         builder: (_, state) => TaskDetailPage(
           taskId: state.pathParameters['id']!,
+        ),
+      ),
+      GoRoute(
+        path: '/chat/:id',
+        builder: (_, state) => ConversationDetailPage(
+          conversationId: state.pathParameters['id']!,
         ),
       ),
     ],
