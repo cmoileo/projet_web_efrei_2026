@@ -23,4 +23,12 @@ class UserService {
     if (!doc.exists) return null;
     return UserModel.fromFirestore(doc);
   }
+
+  Future<List<UserModel>> getVolunteers() async {
+    final snapshot = await _firestore
+        .collection(FirestoreCollections.users)
+        .where('role', isEqualTo: UserRole.volunteer.value)
+        .get();
+    return snapshot.docs.map(UserModel.fromFirestore).toList();
+  }
 }

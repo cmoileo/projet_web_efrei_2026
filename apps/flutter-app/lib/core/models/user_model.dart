@@ -2,19 +2,19 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 enum UserRole {
   student,
-  teacher;
+  volunteer;
 
   static UserRole fromString(String value) {
     return switch (value) {
-      'STUDENT' => UserRole.student,
-      'TEACHER' => UserRole.teacher,
+      'student' => UserRole.student,
+      'volunteer' => UserRole.volunteer,
       _ => UserRole.student,
     };
   }
 
   String get value => switch (this) {
-        UserRole.student => 'STUDENT',
-        UserRole.teacher => 'TEACHER',
+        UserRole.student => 'student',
+        UserRole.volunteer => 'volunteer',
       };
 }
 

@@ -79,7 +79,39 @@ a {
   border: 0;
 }
 
-// ─── Surcharge Material : polices & couleurs de surface ───
+// ─── Surcharge Material : polices & tailles (MDC tokens) ─
+:root {
+  --mdc-outlined-text-field-label-text-font: var(--font-family);
+  --mdc-outlined-text-field-label-text-size: var(--font-size-body);
+  --mdc-outlined-text-field-label-text-weight: var(--font-weight-regular);
+  --mdc-outlined-text-field-input-text-font: var(--font-family);
+  --mdc-outlined-text-field-input-text-size: var(--font-size-body);
+  --mdc-outlined-text-field-input-text-weight: var(--font-weight-regular);
+
+  --mdc-filled-text-field-label-text-font: var(--font-family);
+  --mdc-filled-text-field-label-text-size: var(--font-size-body);
+  --mdc-filled-text-field-input-text-font: var(--font-family);
+  --mdc-filled-text-field-input-text-size: var(--font-size-body);
+
+  --mat-form-field-subscript-text-font: var(--font-family);
+  --mat-form-field-subscript-text-size: var(--font-size-tiny);
+
+  --mat-option-label-text-font: var(--font-family);
+  --mat-option-label-text-size: var(--font-size-body);
+
+  --mat-select-trigger-text-font: var(--font-family);
+  --mat-select-trigger-text-size: var(--font-size-body);
+
+  --mat-sys-body-large-font: var(--font-family);
+  --mat-sys-body-medium-font: var(--font-family);
+  --mat-sys-body-small-font: var(--font-family);
+  --mat-sys-headline-large-font: var(--font-family);
+  --mat-sys-headline-medium-font: var(--font-family);
+
+  --mdc-dialog-subhead-font: var(--font-family);
+  --mdc-dialog-supporting-text-font: var(--font-family);
+}
+
 .mat-mdc-form-field,
 .mdc-text-field--outlined,
 .mat-mdc-dialog-container {

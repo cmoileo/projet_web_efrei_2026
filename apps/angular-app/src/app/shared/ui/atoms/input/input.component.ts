@@ -18,6 +18,7 @@ import {
   ElementRef,
   forwardRef,
   input,
+  output,
   signal,
   viewChild,
 } from '@angular/core';
@@ -52,6 +53,13 @@ export class InputComponent implements ControlValueAccessor {
   autocomplete = input<string>('off');
   /** ID HTML (pour l'association avec un label externe) */
   inputId = input<string | undefined>(undefined);
+  /** Icône Lucide optionnelle (affichée à droite de l'input, cliquable) */
+  suffixIcon = input<LucideIconData | undefined>(undefined);
+  /** Aria-label du bouton suffixe */
+  suffixAriaLabel = input<string>('');
+
+  /** Émis lors d'un clic sur le bouton suffixe */
+  readonly suffixClick = output<void>();
 
   protected readonly inputRef = viewChild<ElementRef<HTMLInputElement>>('inputEl');
   protected readonly internalValue = signal<string>('');

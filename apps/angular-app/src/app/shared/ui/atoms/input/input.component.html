@@ -1,4 +1,4 @@
-<span class="lah-input" [class.lah-input--has-icon]="!!prefixIcon()">
+<span class="lah-input" [class.lah-input--has-icon]="!!prefixIcon()" [class.lah-input--has-suffix]="!!suffixIcon()">
   <!-- Icône préfixe -->
   @if (prefixIcon()) {
     <span class="lah-input__icon" aria-hidden="true">
@@ -18,4 +18,17 @@
     (input)="onInput($event)"
     (blur)="onBlur()"
   />
+
+  @if (suffixIcon()) {
+    <button
+      type="button"
+      class="lah-input__suffix"
+      (click)="suffixClick.emit()"
+      [disabled]="isDisabled() || disabled()"
+      [attr.aria-label]="suffixAriaLabel()"
+      tabindex="0"
+    >
+      <lucide-angular [img]="suffixIcon()!" [size]="18" aria-hidden="true" />
+    </button>
+  }
 </span>

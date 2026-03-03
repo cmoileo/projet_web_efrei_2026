@@ -37,18 +37,51 @@
       cursor: not-allowed;
     }
 
-    // Quand une icône est présente, on laisse la place
     .lah-input--has-icon & {
-      padding-left: calc(var(--space-3) + 16px + var(--space-2));
+      padding-left: calc(var(--space-3) + 16px + var(--space-2)) !important;
+    }
+
+    .lah-input--has-suffix & {
+      padding-right: calc(var(--space-3) + 32px + var(--space-1));
     }
   }
 
   &__icon {
     position: absolute;
-    left: var(--space-3);
+    padding: 0 12px;
     display: flex;
     align-items: center;
     color: var(--color-text-secondary);
     pointer-events: none;
+  }
+
+  &__suffix {
+    position: absolute;
+    right: var(--space-2);
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text-secondary);
+    border-radius: var(--radius-sm);
+    transition: color 0.15s ease, background-color 0.15s ease;
+    flex-shrink: 0;
+
+    &:hover:not(:disabled) {
+      color: var(--color-text-primary);
+      background-color: color-mix(in srgb, var(--color-text-primary) 8%, transparent);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
   }
 }

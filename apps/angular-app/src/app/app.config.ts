@@ -1,6 +1,7 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig, LOCALE_ID, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { LUCIDE_ICONS, LucideIconProvider } from 'lucide-angular';
 import {
   LayoutDashboard,
@@ -24,20 +25,32 @@ import {
   Plus,
   Menu,
   ChevronDown,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  AtSign,
+  KeyRound,
 } from 'lucide-angular';
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';
 
 import { routes } from './app.routes';
+import { environment } from '../environments/environment';
+import { FIREBASE_AUTH, FIREBASE_FIRESTORE } from './core/tokens/firebase.tokens';
 
-/**
- * Configuration principale de l'application.
- * - provideAnimationsAsync : animations Angular Material
- * - LUCIDE_ICONS : registre centralisé des icônes Lucide utilisées
- */
+const _firebaseApp = initializeApp(environment.firebase);
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideAnimationsAsync(),
+    provideNativeDateAdapter(),
+    { provide: LOCALE_ID, useValue: 'fr-FR' },
+    { provide: FIREBASE_AUTH, useValue: getAuth(_firebaseApp) },
+    { provide: FIREBASE_FIRESTORE, useValue: getFirestore(_firebaseApp) },
     {
       provide: LUCIDE_ICONS,
       multi: true,
@@ -63,6 +76,12 @@ export const appConfig: ApplicationConfig = {
         Plus,
         Menu,
         ChevronDown,
+        Mail,
+        Lock,
+        Eye,
+        EyeOff,
+        AtSign,
+        KeyRound,
       }),
     },
   ],

@@ -467,12 +467,12 @@ class _RoleSelector extends StatelessWidget {
             const SizedBox(width: AppSpacing.s3),
             Expanded(
               child: _RoleTile(
-                label: 'Enseignant',
+                label: 'Bénévole',
                 description: 'Je propose mon aide',
                 icon: LucideIcons.bookOpen,
-                isSelected: selected == UserRole.teacher,
+                isSelected: selected == UserRole.volunteer,
                 enabled: enabled,
-                onTap: () => onChanged(UserRole.teacher),
+                onTap: () => onChanged(UserRole.volunteer),
               ),
             ),
           ],

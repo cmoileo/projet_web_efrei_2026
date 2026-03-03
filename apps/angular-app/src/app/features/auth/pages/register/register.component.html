@@ -1,0 +1,124 @@
+<div class="auth-page auth-page--register">
+  <div class="auth-card auth-card--wide">
+    <header class="auth-card__header">
+      <h1 class="auth-card__title">Créer un compte</h1>
+      <p class="auth-card__subtitle">Rejoignez Learn&#64;Home</p>
+    </header>
+
+    @if (firebaseError()) {
+      <div class="auth-error-banner" role="alert">
+        <lucide-angular [img]="AlertCircleIcon" [size]="18" aria-hidden="true" />
+        <span>{{ firebaseError() }}</span>
+      </div>
+    }
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate class="auth-form">
+      <div class="auth-form__row">
+        <app-form-field label="Prénom" [error]="getFirstNameError()">
+          <app-input
+            type="text"
+            [prefixIcon]="UserIcon"
+            autocomplete="given-name"
+            formControlName="firstName"
+          />
+        </app-form-field>
+
+        <app-form-field label="Nom" [error]="getLastNameError()">
+          <app-input
+            type="text"
+            [prefixIcon]="UserIcon"
+            autocomplete="family-name"
+            formControlName="lastName"
+          />
+        </app-form-field>
+      </div>
+
+      <app-form-field label="Pseudo" [error]="getNicknameError()">
+        <app-input
+          type="text"
+          placeholder="mon_pseudo"
+          [prefixIcon]="AtSignIcon"
+          autocomplete="username"
+          formControlName="nickname"
+        />
+      </app-form-field>
+
+      <app-form-field label="Adresse e-mail" [error]="getEmailError()">
+        <app-input
+          type="email"
+          placeholder="exemple@email.com"
+          [prefixIcon]="MailIcon"
+          autocomplete="email"
+          formControlName="email"
+        />
+      </app-form-field>
+
+      <mat-form-field appearance="outline" class="auth-form__field">
+        <mat-label>Date de naissance</mat-label>
+        <input
+          matInput
+          [matDatepicker]="birthdatePicker"
+          formControlName="birthdate"
+          [min]="minBirthdate"
+          [max]="maxBirthdate"
+          [disabled]="isLoading()"
+          placeholder="JJ/MM/AAAA"
+        />
+        <lucide-angular matPrefix [img]="CalendarIcon" [size]="18" class="auth-form__prefix-icon" aria-hidden="true" />
+        <mat-datepicker-toggle matIconSuffix [for]="birthdatePicker" />
+        <mat-datepicker #birthdatePicker startView="multi-year" />
+        @if (getBirthdateError()) {
+          <mat-error>{{ getBirthdateError() }}</mat-error>
+        }
+      </mat-form-field>
+
+      <div class="auth-form__role-section">
+        <span class="auth-form__role-label">Je suis</span>
+        <mat-button-toggle-group formControlName="role" class="auth-form__role-toggle" [disabled]="isLoading()">
+          <mat-button-toggle value="student">Élève</mat-button-toggle>
+          <mat-button-toggle value="volunteer">Bénévole</mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+      <app-form-field label="Mot de passe" [error]="getPasswordError()">
+        <app-input
+          [type]="passwordVisible() ? 'text' : 'password'"
+          [prefixIcon]="LockIcon"
+          [suffixIcon]="passwordVisible() ? EyeOffIcon : EyeIcon"
+          [suffixAriaLabel]="passwordVisible() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+          (suffixClick)="togglePasswordVisibility()"
+          autocomplete="new-password"
+          formControlName="password"
+        />
+      </app-form-field>
+
+      <app-form-field label="Confirmer le mot de passe" [error]="getPasswordConfirmError()">
+        <app-input
+          [type]="passwordConfirmVisible() ? 'text' : 'password'"
+          [prefixIcon]="LockIcon"
+          [suffixIcon]="passwordConfirmVisible() ? EyeOffIcon : EyeIcon"
+          [suffixAriaLabel]="passwordConfirmVisible() ? 'Masquer' : 'Afficher'"
+          (suffixClick)="togglePasswordConfirmVisibility()"
+          autocomplete="new-password"
+          formControlName="passwordConfirm"
+        />
+      </app-form-field>
+
+      <app-btn
+        type="submit"
+        variant="primary"
+        size="lg"
+        [loading]="isLoading()"
+        [disabled]="isLoading()"
+        class="auth-form__submit"
+      >
+        Créer mon compte
+      </app-btn>
+    </form>
+
+    <footer class="auth-card__footer">
+      <span class="auth-card__footer-text">Déjà un compte ?</span>
+      <a routerLink="/auth/login" class="auth-link auth-link--bold">Se connecter</a>
+    </footer>
+  </div>
+</div>
