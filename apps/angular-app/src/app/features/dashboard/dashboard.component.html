@@ -1,0 +1,33 @@
+<div class="dashboard">
+  <header class="dashboard__header">
+    <h1 class="dashboard__greeting">{{ greeting() }}</h1>
+    <p class="dashboard__subtitle">Voici un résumé de votre activité du jour.</p>
+  </header>
+
+  <div class="dashboard__quick-actions">
+    <app-btn [icon]="PlusIcon" (btnClick)="navigateToTasks()">Créer une tâche</app-btn>
+    <app-btn [icon]="UsersIcon" variant="secondary" (btnClick)="scrollToStudents()">Voir mes élèves</app-btn>
+  </div>
+
+  <div class="dashboard__grid">
+    <div class="dashboard__col dashboard__col--main">
+      <section id="students-section" aria-label="Liste des élèves">
+        <app-students-card [students]="dashboardData().students" />
+      </section>
+
+      <section aria-label="Résumé des tâches">
+        <app-task-summary-card [summary]="dashboardData().taskSummary" />
+      </section>
+    </div>
+
+    <div class="dashboard__col dashboard__col--side">
+      <section aria-label="Prochains événements">
+        <app-events-card [events]="dashboardData().events" />
+      </section>
+
+      <section aria-label="Messages non lus">
+        <app-messages-card [unreadCount]="dashboardData().unreadMessages" />
+      </section>
+    </div>
+  </div>
+</div>

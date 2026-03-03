@@ -1,0 +1,26 @@
+<app-card>
+  <div class="students-card">
+    <div class="students-card__header">
+      <lucide-angular [img]="UsersIcon" [size]="20" class="students-card__icon" aria-hidden="true" />
+      <h3 class="students-card__title">Mes élèves</h3>
+    </div>
+
+    @if (hasStudents()) {
+      <ul class="students-card__list" role="list">
+        @for (student of students(); track student.id) {
+          <li class="students-card__item">
+            <app-avatar [initials]="getInitials(student)" [size]="40" [alt]="student.firstName + ' ' + student.lastName" />
+            <div class="students-card__info">
+              <span class="students-card__name">{{ student.firstName }} {{ student.lastName }}</span>
+              <span class="students-card__tasks">
+                {{ student.taskCount }} tâche{{ student.taskCount > 1 ? 's' : '' }} en cours
+              </span>
+            </div>
+          </li>
+        }
+      </ul>
+    } @else {
+      <p class="students-card__empty">Aucun élève associé</p>
+    }
+  </div>
+</app-card>

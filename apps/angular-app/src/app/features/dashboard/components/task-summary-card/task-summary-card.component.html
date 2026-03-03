@@ -1,0 +1,27 @@
+<app-card>
+  <div class="task-summary-card">
+    <div class="task-summary-card__header">
+      <lucide-angular [img]="CheckSquareIcon" [size]="20" class="task-summary-card__icon" aria-hidden="true" />
+      <h3 class="task-summary-card__title">Résumé des tâches</h3>
+    </div>
+
+    @if (hasTasks()) {
+      <div class="task-summary-card__stats">
+        <div class="task-summary-card__stat">
+          <span class="task-summary-card__stat-value">{{ summary()!.total }}</span>
+          <span class="task-summary-card__stat-label">Total</span>
+        </div>
+        <div class="task-summary-card__stat task-summary-card__stat--success">
+          <span class="task-summary-card__stat-value">{{ summary()!.completed }}</span>
+          <span class="task-summary-card__stat-label">Complétées</span>
+        </div>
+        <div class="task-summary-card__stat task-summary-card__stat--warning">
+          <span class="task-summary-card__stat-value">{{ summary()!.inProgress }}</span>
+          <span class="task-summary-card__stat-label">En cours</span>
+        </div>
+      </div>
+    } @else {
+      <p class="task-summary-card__empty">Aucune tâche pour le moment</p>
+    }
+  </div>
+</app-card>

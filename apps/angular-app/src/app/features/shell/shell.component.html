@@ -1,0 +1,20 @@
+<div class="lah-shell">
+  <app-sidebar
+    [navItems]="navItems()"
+    [userInitials]="userInitials()"
+    [userName]="userName()"
+    [userRole]="userRole()"
+    (logoutClick)="onLogout()"
+  />
+
+  <div class="lah-shell__content">
+    <app-top-app-bar
+      [pageTitle]="pageTitle()"
+      [userInitials]="userInitials()"
+    />
+
+    <main class="lah-shell__main" id="main-content">
+      <router-outlet />
+    </main>
+  </div>
+</div>

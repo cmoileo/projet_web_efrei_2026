@@ -1,0 +1,21 @@
+<app-card>
+  <div class="messages-card">
+    <div class="messages-card__header">
+      <lucide-angular [img]="MessageCircleIcon" [size]="20" class="messages-card__icon" aria-hidden="true" />
+      <h3 class="messages-card__title">Messages non lus</h3>
+    </div>
+
+    @if (hasMessages()) {
+      <div class="messages-card__counter">
+        <span class="messages-card__count" [attr.aria-label]="unreadCount() + ' messages non lus'">
+          {{ unreadCount() }}
+        </span>
+        <span class="messages-card__label">
+          message{{ unreadCount() > 1 ? 's' : '' }} non lu{{ unreadCount() > 1 ? 's' : '' }}
+        </span>
+      </div>
+    } @else {
+      <p class="messages-card__empty">Aucun message non lu</p>
+    }
+  </div>
+</app-card>
