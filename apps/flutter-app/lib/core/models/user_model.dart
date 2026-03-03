@@ -29,6 +29,7 @@ class UserModel {
     required this.role,
     required this.createdAt,
     required this.updatedAt,
+    this.volunteerId,
   });
 
   final String uid;
@@ -40,6 +41,8 @@ class UserModel {
   final UserRole role;
   final DateTime createdAt;
   final DateTime updatedAt;
+
+  final String? volunteerId;
 
   factory UserModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
@@ -53,6 +56,7 @@ class UserModel {
       role: UserRole.fromString(data['role'] as String),
       createdAt: (data['created_at'] as Timestamp).toDate(),
       updatedAt: (data['updated_at'] as Timestamp).toDate(),
+      volunteerId: data['volunteer_id'] as String?,
     );
   }
 
@@ -66,6 +70,7 @@ class UserModel {
         'role': role.value,
         'created_at': Timestamp.fromDate(createdAt),
         'updated_at': Timestamp.fromDate(updatedAt),
+        if (role == UserRole.student) 'volunteer_id': volunteerId,
       };
 
   UserModel copyWith({
@@ -78,6 +83,7 @@ class UserModel {
     UserRole? role,
     DateTime? createdAt,
     DateTime? updatedAt,
+    Object? volunteerId = _undefined,
   }) {
     return UserModel(
       uid: uid ?? this.uid,
@@ -89,6 +95,10 @@ class UserModel {
       role: role ?? this.role,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
+      volunteerId:
+          volunteerId == _undefined ? this.volunteerId : volunteerId as String?,
     );
   }
 }
+
+const Object _undefined = Object();

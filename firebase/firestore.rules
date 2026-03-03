@@ -1,12 +1,18 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allows only authenticated users to read/write their own document
     match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+      // Own document : full read/write
+      allow get, write: if request.auth != null && request.auth.uid == userId;
+
+      // Single-document read for any volunteer profile
+      allow get: if request.auth != null && resource.data.role == 'volunteer';
+
+      // Collection query needed to pick a random volunteer at student registration
+      allow list: if request.auth != null;
     }
-    
-    // Default deny for everything else for now
+
+    // Default deny for everything else
     match /{document=**} {
       allow read, write: if false;
     }

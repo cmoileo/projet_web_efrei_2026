@@ -123,6 +123,15 @@ class AuthNotifier extends StateNotifier<AuthState> {
         email: email,
         password: password,
       );
+
+      await credential.user!.getIdToken(true);
+      await Future<void>.delayed(const Duration(milliseconds: 500));
+
+      String? volunteerId;
+      if (role == UserRole.student) {
+        volunteerId = await _resolveVolunteerId();
+      }
+
       final now = DateTime.now();
       final newUser = UserModel(
         uid: credential.user!.uid,
@@ -134,6 +143,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
         role: role,
         createdAt: now,
         updatedAt: now,
+        volunteerId: volunteerId,
       );
       await _userService.createUser(newUser);
       state = state.copyWith(isLoading: false, user: newUser);
@@ -145,8 +155,6 @@ class AuthNotifier extends StateNotifier<AuthState> {
       );
       return false;
     } catch (_) {
-      // Échec de l'écriture Firestore (ex. permission-denied) :
-      // on supprime le compte Firebase Auth pour éviter un compte orphelin.
       await credential?.user?.delete();
       state = state.copyWith(
         isLoading: false,
@@ -155,6 +163,23 @@ class AuthNotifier extends StateNotifier<AuthState> {
       );
       return false;
     }
+  }
+
+  Future<String?> _resolveVolunteerId() async {
+    const maxAttempts = 3;
+    for (var attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        final volunteer = await _userService.getRandomVolunteer();
+        return volunteer?.uid;
+      } catch (e) {
+        debugPrint(
+            '[Auth] getRandomVolunteer attempt $attempt/$maxAttempts failed: $e');
+        if (attempt < maxAttempts) {
+          await Future<void>.delayed(Duration(seconds: attempt));
+        }
+      }
+    }
+    return null;
   }
 
   Future<bool> sendPasswordResetEmail(String email) async {
