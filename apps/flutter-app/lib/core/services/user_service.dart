@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
@@ -14,6 +16,7 @@ class UserService {
         .collection(FirestoreCollections.users)
         .doc(user.uid)
         .set(user.toFirestore());
+    await _firestore.waitForPendingWrites();
   }
 
   Future<UserModel?> getUser(String uid) async {
@@ -30,5 +33,11 @@ class UserService {
         .where('role', isEqualTo: UserRole.volunteer.value)
         .get();
     return snapshot.docs.map(UserModel.fromFirestore).toList();
+  }
+
+  Future<UserModel?> getRandomVolunteer() async {
+    final volunteers = await getVolunteers();
+    if (volunteers.isEmpty) return null;
+    return volunteers[Random().nextInt(volunteers.length)];
   }
 }
