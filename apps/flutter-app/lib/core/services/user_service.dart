@@ -40,4 +40,13 @@ class UserService {
     if (volunteers.isEmpty) return null;
     return volunteers[Random().nextInt(volunteers.length)];
   }
+
+  Future<List<UserModel>> getStudentsForVolunteer(String volunteerId) async {
+    final snapshot = await _firestore
+        .collection(FirestoreCollections.users)
+        .where('role', isEqualTo: UserRole.student.value)
+        .where('volunteer_id', isEqualTo: volunteerId)
+        .get();
+    return snapshot.docs.map(UserModel.fromFirestore).toList();
+  }
 }

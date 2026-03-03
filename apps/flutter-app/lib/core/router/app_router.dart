@@ -10,6 +10,8 @@ import '../../features/calendar/screens/calendar_screen.dart';
 import '../../features/chat/screens/chat_screen.dart';
 import '../../features/dashboard/screens/dashboard_screen.dart';
 import '../../features/profile/screens/profile_screen.dart';
+import '../../features/tasks/presentation/pages/task_detail_page.dart';
+import '../../features/tasks/presentation/pages/task_form_page.dart';
 import '../../features/tasks/screens/tasks_screen.dart';
 import '../../shared/widgets/organisms/main_shell.dart';
 
@@ -64,6 +66,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             builder: (_, __) => const ProfileScreen(),
           ),
         ],
+      ),
+      GoRoute(
+        path: '/tasks/new',
+        builder: (_, __) => const TaskFormPage(),
+      ),
+      GoRoute(
+        path: '/tasks/:id',
+        builder: (_, state) => TaskDetailPage(
+          taskId: state.pathParameters['id']!,
+        ),
       ),
     ],
     errorBuilder: (_, state) => Scaffold(
