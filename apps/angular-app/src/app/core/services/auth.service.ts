@@ -83,6 +83,15 @@ export class AuthService implements OnDestroy {
         params.password,
       );
       uid = credential.user.uid;
+
+      await credential.user.getIdToken(true);
+      await new Promise<void>((resolve) => setTimeout(resolve, 500));
+
+      let volunteerId: string | undefined;
+      if (params.role === 'student') {
+        volunteerId = await this._resolveVolunteerId();
+      }
+
       const now = new Date();
       const newUser: User = {
         uid,
@@ -94,6 +103,7 @@ export class AuthService implements OnDestroy {
         role: params.role,
         createdAt: now,
         updatedAt: now,
+        volunteerId,
       };
       await this.userService.createUser(newUser);
       this._patch({ user: newUser, loading: false });
@@ -129,6 +139,21 @@ export class AuthService implements OnDestroy {
 
   clearError(): void {
     this._state.update((s) => ({ ...s, error: null }));
+  }
+
+  private async _resolveVolunteerId(): Promise<string | undefined> {
+    const maxAttempts = 3;
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      try {
+        const volunteer = await this.userService.getRandomVolunteer();
+        return volunteer?.uid;
+      } catch {
+        if (attempt < maxAttempts) {
+          await new Promise<void>((resolve) => setTimeout(resolve, attempt * 1000));
+        }
+      }
+    }
+    return undefined;
   }
 
   private _patch(patch: Partial<AuthState>): void {
