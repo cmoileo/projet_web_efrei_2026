@@ -4,3 +4,4 @@ library;
 export 'app_bottom_nav.dart';
 export 'app_modal.dart';
 export 'app_top_bar.dart';
+export 'main_shell.dart';
