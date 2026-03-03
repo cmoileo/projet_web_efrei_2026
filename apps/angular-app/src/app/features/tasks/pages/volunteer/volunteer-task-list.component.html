@@ -1,0 +1,97 @@
+<div class="volunteer-task-list">
+  <header class="volunteer-task-list__header">
+    <h1 class="volunteer-task-list__title">Tâches</h1>
+    <app-btn [icon]="PlusIcon" variant="primary" size="md" (btnClick)="navigateToNew()">
+      Nouvelle tâche
+    </app-btn>
+  </header>
+
+  <div class="volunteer-task-list__filters">
+    <select
+      class="volunteer-task-list__select"
+      [value]="statusFilter()"
+      (change)="onStatusChange($any($event.target).value)"
+      aria-label="Filtrer par statut"
+    >
+      @for (opt of statusOptions; track opt.value) {
+        <option [value]="opt.value">{{ opt.label }}</option>
+      }
+    </select>
+
+    <select
+      class="volunteer-task-list__select"
+      [value]="studentFilter()"
+      (change)="onStudentChange($any($event.target).value)"
+      aria-label="Filtrer par élève"
+    >
+      <option value="all">Tous les élèves</option>
+      @for (student of students(); track student.uid) {
+        <option [value]="student.uid">{{ student.firstName }} {{ student.lastName }}</option>
+      }
+    </select>
+  </div>
+
+  @if (loading()) {
+    <div class="volunteer-task-list__loading">
+      <div class="volunteer-task-list__spinner"></div>
+    </div>
+  } @else if (error()) {
+    <div class="volunteer-task-list__error">{{ error() }}</div>
+  } @else if (tasks().length === 0) {
+    <div class="volunteer-task-list__empty">
+      <p class="volunteer-task-list__empty-text">Aucune tâche pour le moment.</p>
+    </div>
+  } @else if (filteredTasks().length === 0) {
+    <div class="volunteer-task-list__empty">
+      <p class="volunteer-task-list__empty-text">Aucune tâche ne correspond à ce filtre.</p>
+    </div>
+  } @else {
+    <ul class="volunteer-task-list__list" role="list">
+      @for (task of filteredTasks(); track task.id) {
+        <li
+          class="volunteer-task-list__card"
+          (click)="navigateToDetail(task.id)"
+          role="button"
+          tabindex="0"
+          (keydown.enter)="navigateToDetail(task.id)"
+        >
+          <div class="volunteer-task-list__card-header">
+            <span class="volunteer-task-list__card-title">{{ task.title }}</span>
+            <app-badge [status]="effectiveStatus(task)" />
+          </div>
+
+          <p class="volunteer-task-list__card-description">{{ task.description }}</p>
+
+          <div class="volunteer-task-list__card-footer">
+            <span class="volunteer-task-list__card-meta">
+              Élève : <strong>{{ studentName(task.assignedTo) }}</strong>
+            </span>
+            <span class="volunteer-task-list__card-meta">
+              Échéance : <strong>{{ task.dueDate | date:'dd/MM/yyyy' }}</strong>
+            </span>
+
+            <div class="volunteer-task-list__card-actions">
+              <button
+                class="volunteer-task-list__action-btn volunteer-task-list__action-btn--edit"
+                (click)="navigateToEdit(task.id, $event)"
+                title="Modifier"
+                aria-label="Modifier la tâche"
+              >
+                <lucide-angular [img]="PencilIcon" [size]="16" aria-hidden="true" />
+              </button>
+              <button
+                class="volunteer-task-list__action-btn volunteer-task-list__action-btn--delete"
+                (click)="onDeleteTask(task, $event)"
+                [disabled]="deletingId() === task.id"
+                title="Supprimer"
+                aria-label="Supprimer la tâche"
+              >
+                <lucide-angular [img]="Trash2Icon" [size]="16" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</div>

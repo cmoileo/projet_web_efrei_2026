@@ -1,0 +1,70 @@
+<div class="volunteer-task-detail">
+  <button class="volunteer-task-detail__back" (click)="navigateBack()" aria-label="Retour à la liste">
+    <lucide-angular [img]="ChevronLeftIcon" [size]="20" aria-hidden="true" />
+    Retour
+  </button>
+
+  @if (loading()) {
+    <div class="volunteer-task-detail__loading">
+      <div class="volunteer-task-detail__spinner"></div>
+    </div>
+  } @else if (error()) {
+    <div class="volunteer-task-detail__error">{{ error() }}</div>
+  } @else if (task(); as task) {
+    <div class="volunteer-task-detail__card">
+      <div class="volunteer-task-detail__card-header">
+        <h1 class="volunteer-task-detail__title">{{ task.title }}</h1>
+        <app-badge [status]="effectiveStatus(task)" />
+      </div>
+
+      <div class="volunteer-task-detail__body">
+        <div class="volunteer-task-detail__field">
+          <span class="volunteer-task-detail__label">Description</span>
+          <p class="volunteer-task-detail__value">{{ task.description }}</p>
+        </div>
+
+        <div class="volunteer-task-detail__meta-grid">
+          <div class="volunteer-task-detail__field">
+            <span class="volunteer-task-detail__label">Élève assigné</span>
+            <span class="volunteer-task-detail__value">{{ studentName() }}</span>
+          </div>
+
+          <div class="volunteer-task-detail__field">
+            <span class="volunteer-task-detail__label">Date d'échéance</span>
+            <span class="volunteer-task-detail__value">{{ task.dueDate | date:'dd/MM/yyyy' }}</span>
+          </div>
+
+          <div class="volunteer-task-detail__field">
+            <span class="volunteer-task-detail__label">Créée le</span>
+            <span class="volunteer-task-detail__value">{{ task.createdAt | date:'dd/MM/yyyy' }}</span>
+          </div>
+
+          <div class="volunteer-task-detail__field">
+            <span class="volunteer-task-detail__label">Dernière modification</span>
+            <span class="volunteer-task-detail__value">{{ task.updatedAt | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="volunteer-task-detail__actions">
+        <app-btn
+          [icon]="PencilIcon"
+          variant="secondary"
+          size="md"
+          (btnClick)="navigateToEdit()"
+        >
+          Modifier
+        </app-btn>
+        <app-btn
+          [icon]="Trash2Icon"
+          variant="danger"
+          size="md"
+          [loading]="deleting()"
+          (btnClick)="onDelete()"
+        >
+          Supprimer
+        </app-btn>
+      </div>
+    </div>
+  }
+</div>

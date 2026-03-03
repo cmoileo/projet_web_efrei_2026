@@ -1,14 +1,23 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { LucideAngularModule, CheckSquare } from 'lucide-angular';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { AuthService } from '../../core/services/auth.service';
+import { VolunteerTaskListComponent } from './pages/volunteer/volunteer-task-list.component';
+import { StudentTaskListComponent } from './pages/student/student-task-list.component';
 
 @Component({
   selector: 'app-tasks',
   standalone: true,
-  imports: [LucideAngularModule],
-  templateUrl: './tasks.component.html',
-  styleUrl: './tasks.component.scss',
+  imports: [VolunteerTaskListComponent, StudentTaskListComponent],
+  template: `
+    @if (role() === 'volunteer') {
+      <app-volunteer-task-list />
+    } @else {
+      <app-student-task-list />
+    }
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TasksComponent {
-  protected readonly CheckSquareIcon = CheckSquare;
+  private readonly authService = inject(AuthService);
+
+  protected readonly role = () => this.authService.currentUser()?.role;
 }

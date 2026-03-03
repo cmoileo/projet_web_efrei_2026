@@ -35,6 +35,8 @@ import {
   EyeOff,
   AtSign,
   KeyRound,
+  ArrowLeft,
+  AlertCircle,
 } from 'lucide-angular';
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
@@ -86,6 +88,8 @@ export const appConfig: ApplicationConfig = {
         EyeOff,
         AtSign,
         KeyRound,
+        ArrowLeft,
+        AlertCircle,
       }),
     },
   ],

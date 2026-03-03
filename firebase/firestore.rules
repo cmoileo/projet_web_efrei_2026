@@ -8,6 +8,11 @@ service cloud.firestore {
       // Single-document read for any volunteer profile
       allow get: if request.auth != null && resource.data.role == 'volunteer';
 
+      // Volunteer can read a student document if that student is assigned to them
+      allow get: if request.auth != null &&
+        resource.data.role == 'student' &&
+        resource.data.volunteer_id == request.auth.uid;
+
       // Collection query needed to pick a random volunteer at student registration
       allow list: if request.auth != null;
     }

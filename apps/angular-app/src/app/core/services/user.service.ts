@@ -68,4 +68,28 @@ export class UserService {
       updatedAt: (data['updated_at'] as Timestamp).toDate(),
     };
   }
+
+  async getStudentsForVolunteer(volunteerId: string): Promise<User[]> {
+    const q = query(
+      collection(this.firestore, FIRESTORE_COLLECTIONS.USERS),
+      where('role', '==', 'student'),
+      where('volunteer_id', '==', volunteerId),
+    );
+    const snap = await getDocs(q);
+    return snap.docs.map((d) => {
+      const data = d.data();
+      return {
+        uid: d.id,
+        firstName: data['first_name'] as string,
+        lastName: data['last_name'] as string,
+        nickname: data['nickname'] as string,
+        email: data['email'] as string,
+        birthdate: (data['birthdate'] as Timestamp).toDate(),
+        role: 'student' as const,
+        createdAt: (data['created_at'] as Timestamp).toDate(),
+        updatedAt: (data['updated_at'] as Timestamp).toDate(),
+        volunteerId: data['volunteer_id'] as string,
+      };
+    });
+  }
 }

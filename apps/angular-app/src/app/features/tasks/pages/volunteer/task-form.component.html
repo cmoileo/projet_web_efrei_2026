@@ -1,0 +1,96 @@
+<div class="task-form">
+  <button class="task-form__back" (click)="navigateBack()" aria-label="Retour">
+    <lucide-angular [img]="ChevronLeftIcon" [size]="20" aria-hidden="true" />
+    Retour
+  </button>
+
+  <h1 class="task-form__title">
+    {{ editId() ? 'Modifier la tâche' : 'Nouvelle tâche' }}
+  </h1>
+
+  @if (loading()) {
+    <div class="task-form__loading">
+      <div class="task-form__spinner"></div>
+    </div>
+  } @else {
+    <form
+      class="task-form__form"
+      [formGroup]="form"
+      (ngSubmit)="onSubmit()"
+      novalidate
+    >
+      <app-form-field label="Titre" [required]="true" [error]="getTitleError()">
+        <input matInput formControlName="title" placeholder="Titre de la tâche" />
+      </app-form-field>
+
+      <app-form-field label="Description" [required]="true" [error]="getDescriptionError()">
+        <textarea
+          matInput
+          formControlName="description"
+          placeholder="Décrivez la tâche..."
+          rows="4"
+        ></textarea>
+      </app-form-field>
+
+      <app-form-field label="Date d'échéance" [required]="true" [error]="getDueDateError()">
+        <input
+          matInput
+          [matDatepicker]="picker"
+          formControlName="dueDate"
+          placeholder="jj/mm/aaaa"
+          readonly
+        />
+        <mat-datepicker-toggle matSuffix [for]="picker" />
+        <mat-datepicker #picker />
+      </app-form-field>
+
+      <div class="task-form__field-group">
+        <div class="task-form__field-wrapper">
+          <label class="task-form__label task-form__label--required">Élève assigné</label>
+          <select
+            class="task-form__select"
+            [class.task-form__select--error]="getAssignedToError()"
+            formControlName="assignedTo"
+            aria-label="Élève assigné"
+          >
+            <option value="" disabled>Sélectionner un élève</option>
+            @for (student of students(); track student.uid) {
+              <option [value]="student.uid">
+                {{ student.firstName }} {{ student.lastName }}
+              </option>
+            }
+          </select>
+          @if (getAssignedToError()) {
+            <span class="task-form__field-error">{{ getAssignedToError() }}</span>
+          }
+        </div>
+
+        <div class="task-form__field-wrapper">
+          <label class="task-form__label task-form__label--required">Statut</label>
+          <select
+            class="task-form__select"
+            formControlName="status"
+            aria-label="Statut de la tâche"
+          >
+            @for (opt of statusOptions; track opt.value) {
+              <option [value]="opt.value">{{ opt.label }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div class="task-form__footer">
+        <app-btn variant="ghost" type="button" (btnClick)="navigateBack()">
+          Annuler
+        </app-btn>
+        <app-btn
+          variant="primary"
+          type="submit"
+          [loading]="submitting()"
+        >
+          {{ editId() ? 'Enregistrer les modifications' : 'Créer la tâche' }}
+        </app-btn>
+      </div>
+    </form>
+  }
+</div>

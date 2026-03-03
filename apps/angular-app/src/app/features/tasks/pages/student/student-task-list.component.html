@@ -1,0 +1,59 @@
+<div class="student-task-list">
+  <header class="student-task-list__header">
+    <h1 class="student-task-list__title">Mes tâches</h1>
+  </header>
+
+  <div class="student-task-list__filters">
+    <select
+      class="student-task-list__select"
+      [value]="statusFilter()"
+      (change)="onStatusChange($any($event.target).value)"
+      aria-label="Filtrer par statut"
+    >
+      @for (opt of statusOptions; track opt.value) {
+        <option [value]="opt.value">{{ opt.label }}</option>
+      }
+    </select>
+  </div>
+
+  @if (loading()) {
+    <div class="student-task-list__loading">
+      <div class="student-task-list__spinner"></div>
+    </div>
+  } @else if (error()) {
+    <div class="student-task-list__error">{{ error() }}</div>
+  } @else if (tasks().length === 0) {
+    <div class="student-task-list__empty">
+      <p class="student-task-list__empty-text">Aucune tâche pour le moment.</p>
+    </div>
+  } @else if (filteredTasks().length === 0) {
+    <div class="student-task-list__empty">
+      <p class="student-task-list__empty-text">Aucune tâche ne correspond à ce filtre.</p>
+    </div>
+  } @else {
+    <ul class="student-task-list__list" role="list">
+      @for (task of filteredTasks(); track task.id) {
+        <li
+          class="student-task-list__card"
+          (click)="navigateToDetail(task.id)"
+          role="button"
+          tabindex="0"
+          (keydown.enter)="navigateToDetail(task.id)"
+        >
+          <div class="student-task-list__card-header">
+            <span class="student-task-list__card-title">{{ task.title }}</span>
+            <app-badge [status]="effectiveStatus(task)" />
+          </div>
+
+          <p class="student-task-list__card-description">{{ task.description }}</p>
+
+          <div class="student-task-list__card-footer">
+            <span class="student-task-list__card-meta">
+              Échéance : <strong>{{ task.dueDate | date:'dd/MM/yyyy' }}</strong>
+            </span>
+          </div>
+        </li>
+      }
+    </ul>
+  }
+</div>

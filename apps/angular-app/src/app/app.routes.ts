@@ -27,10 +27,8 @@ export const routes: Routes = [
       },
       {
         path: 'tasks',
-        loadComponent: () =>
-          import('./features/tasks/tasks.component').then(
-            (m) => m.TasksComponent,
-          ),
+        loadChildren: () =>
+          import('./features/tasks/tasks.routes').then((m) => m.TASKS_ROUTES),
       },
       {
         path: 'calendar',

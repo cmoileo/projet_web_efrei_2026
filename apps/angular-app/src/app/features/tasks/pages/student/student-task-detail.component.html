@@ -1,0 +1,69 @@
+<div class="student-task-detail">
+  <button class="student-task-detail__back" (click)="navigateBack()" aria-label="Retour à la liste">
+    <lucide-angular [img]="ChevronLeftIcon" [size]="20" aria-hidden="true" />
+    Retour
+  </button>
+
+  @if (loading()) {
+    <div class="student-task-detail__loading">
+      <div class="student-task-detail__spinner"></div>
+    </div>
+  } @else if (error()) {
+    <div class="student-task-detail__error">{{ error() }}</div>
+  } @else if (task(); as task) {
+    <div class="student-task-detail__card">
+      <div class="student-task-detail__card-header">
+        <h1 class="student-task-detail__title">{{ task.title }}</h1>
+        <app-badge [status]="effectiveStatus(task)" />
+      </div>
+
+      <div class="student-task-detail__body">
+        <div class="student-task-detail__field">
+          <span class="student-task-detail__label">Description</span>
+          <p class="student-task-detail__value">{{ task.description }}</p>
+        </div>
+
+        <div class="student-task-detail__meta-grid">
+          <div class="student-task-detail__field">
+            <span class="student-task-detail__label">Date d'échéance</span>
+            <span class="student-task-detail__value">{{ task.dueDate | date:'dd/MM/yyyy' }}</span>
+          </div>
+
+          <div class="student-task-detail__field">
+            <span class="student-task-detail__label">Statut actuel</span>
+            <span class="student-task-detail__value">
+              @switch (task.status) {
+                @case ('todo') { À faire }
+                @case ('in_progress') { En cours }
+                @case ('done') { Terminée }
+              }
+            </span>
+          </div>
+
+          <div class="student-task-detail__field">
+            <span class="student-task-detail__label">Date de création</span>
+            <span class="student-task-detail__value">{{ task.createdAt | date:'dd/MM/yyyy' }}</span>
+          </div>
+
+          <div class="student-task-detail__field">
+            <span class="student-task-detail__label">Dernière modification</span>
+            <span class="student-task-detail__value">{{ task.updatedAt | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+      </div>
+
+      @if (nextStatus(task)) {
+        <div class="student-task-detail__actions">
+          <app-btn
+            variant="primary"
+            size="md"
+            [loading]="updating()"
+            (btnClick)="onUpdateStatus()"
+          >
+            {{ nextStatusLabel(task) }}
+          </app-btn>
+        </div>
+      }
+    </div>
+  }
+</div>
