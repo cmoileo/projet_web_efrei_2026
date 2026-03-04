@@ -17,6 +17,12 @@ export type StudentInfo = {
   taskCount: number | null;
 };
 
+export type VolunteerInfo = {
+  uid: string;
+  firstName: string;
+  lastName: string;
+};
+
 export type DashboardUnreadMessage = {
   conversationId: string;
   senderName: string;

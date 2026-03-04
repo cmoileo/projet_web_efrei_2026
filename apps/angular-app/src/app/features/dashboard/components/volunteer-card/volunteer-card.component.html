@@ -1,0 +1,24 @@
+<app-card>
+  <div class="volunteer-card">
+    <div class="volunteer-card__header">
+      <lucide-angular [img]="UserIcon" [size]="20" class="volunteer-card__icon" aria-hidden="true" />
+      <h3 class="volunteer-card__title">Mon bénévole</h3>
+    </div>
+
+    @if (isLoading()) {
+      <div class="volunteer-card__loader">
+        <span class="volunteer-card__skeleton"></span>
+      </div>
+    } @else if (fullName()) {
+      <div class="volunteer-card__content">
+        <app-avatar [initials]="initials()" [size]="48" [alt]="fullName()" />
+        <div class="volunteer-card__info">
+          <span class="volunteer-card__name">{{ fullName() }}</span>
+          <span class="volunteer-card__label">Votre tuteur</span>
+        </div>
+      </div>
+    } @else {
+      <p class="volunteer-card__empty">Aucun bénévole associé</p>
+    }
+  </div>
+</app-card>

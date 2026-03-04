@@ -35,6 +35,17 @@ export class EventService {
       .sort((a, b) => a.date.getTime() - b.date.getTime());
   }
 
+  async getEventsByStudent(studentId: string): Promise<CalendarEvent[]> {
+    const q = query(
+      collection(this.firestore, FIRESTORE_COLLECTIONS.EVENTS),
+      where('studentIds', 'array-contains', studentId),
+    );
+    const snap = await getDocs(q);
+    return snap.docs
+      .map(docToEvent)
+      .sort((a, b) => a.date.getTime() - b.date.getTime());
+  }
+
   async getEventById(eventId: string): Promise<CalendarEvent | null> {
     const ref = doc(this.firestore, FIRESTORE_COLLECTIONS.EVENTS, eventId);
     const snap = await getDoc(ref);

@@ -33,19 +33,22 @@
           </select>
         </div>
 
-        <div class="event-form__field-wrapper">
-          <label class="event-form__label event-form__label--required">Date et heure</label>
+        <app-form-field label="Date" [required]="true" [error]="getDateError()">
           <input
-            class="event-form__datetime"
-            [class.event-form__datetime--error]="getDateError()"
-            type="datetime-local"
-            formControlName="date"
+            matInput
+            [matDatepicker]="picker"
+            formControlName="eventDate"
+            placeholder="jj/mm/aaaa"
+            readonly
           />
-          @if (getDateError()) {
-            <span class="event-form__field-error">{{ getDateError() }}</span>
-          }
-        </div>
+          <mat-datepicker-toggle matSuffix [for]="picker" />
+          <mat-datepicker #picker />
+        </app-form-field>
       </div>
+
+      <app-form-field label="Heure" [required]="true" [error]="getTimeError()">
+        <input matInput type="time" formControlName="eventTime" />
+      </app-form-field>
 
       <div class="event-form__field-wrapper">
         <label class="event-form__label event-form__label--required">Élèves invités</label>
@@ -84,12 +87,18 @@
 
       <div class="event-form__field-wrapper">
         <label class="event-form__label">Tâche liée (optionnel)</label>
-        <select class="event-form__select" formControlName="linkedTaskId" aria-label="Tâche liée">
-          <option value="">Aucune tâche</option>
-          @for (task of tasks(); track task.id) {
-            <option [value]="task.id">{{ task.title }}</option>
-          }
-        </select>
+        @if (filteredTasks().length === 0) {
+          <p class="event-form__no-tasks">
+            {{ selectedStudentIds().length === 0 ? 'Sélectionnez un élève pour voir ses tâches.' : 'Aucune tâche disponible pour les élèves sélectionnés.' }}
+          </p>
+        } @else {
+          <select class="event-form__select" formControlName="linkedTaskId" aria-label="Tâche liée">
+            <option value="">Aucune tâche</option>
+            @for (task of filteredTasks(); track task.id) {
+              <option [value]="task.id">{{ task.title }}</option>
+            }
+          </select>
+        }
       </div>
 
       <div class="event-form__footer">

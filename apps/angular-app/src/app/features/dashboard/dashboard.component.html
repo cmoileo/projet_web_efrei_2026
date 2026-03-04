@@ -5,24 +5,30 @@
   </header>
 
   <div class="dashboard__quick-actions">
-    <app-btn [icon]="PlusIcon" (btnClick)="navigateToTasks()">Créer une tâche</app-btn>
-    <app-btn [icon]="UsersIcon" variant="secondary" (btnClick)="scrollToStudents()">Voir mes élèves</app-btn>
+    @if (role() === 'volunteer') {
+      <app-btn [icon]="PlusIcon" (btnClick)="navigateToTasks()">Créer une tâche</app-btn>
+      <app-btn [icon]="UsersIcon" variant="secondary" (btnClick)="scrollToStudents()">Voir mes élèves</app-btn>
+    }
   </div>
 
   <div class="dashboard__grid">
     <div class="dashboard__col dashboard__col--main">
-      <section id="students-section" aria-label="Liste des élèves">
-        <app-students-card [students]="students()" />
+      <section id="students-section" aria-label="Élèves ou bénévole">
+        @if (role() === 'volunteer') {
+          <app-students-card [students]="students()" />
+        } @else {
+          <app-volunteer-card [volunteerInfo]="volunteerInfo()" />
+        }
       </section>
 
       <section aria-label="Résumé des tâches">
-        <app-task-summary-card [summary]="taskSummary" />
+        <app-task-summary-card [summary]="taskSummary()" />
       </section>
     </div>
 
     <div class="dashboard__col dashboard__col--side">
       <section aria-label="Prochains événements">
-        <app-events-card [events]="events" />
+        <app-events-card [events]="events()" />
       </section>
 
       <section aria-label="Messages non lus">

@@ -1,6 +1,7 @@
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   OnInit,
   signal,
@@ -62,17 +63,30 @@ export class EventFormPageComponent implements OnInit {
   protected readonly tasks = signal<Task[]>([]);
   protected readonly loading = signal(true);
   protected readonly submitting = signal(false);
+  protected readonly selectedStudentIds = signal<string[]>([]);
+
+  protected readonly filteredTasks = computed(() => {
+    const ids = this.selectedStudentIds();
+    if (ids.length === 0) return [];
+    return this.tasks().filter((t) => ids.includes(t.assignedTo));
+  });
 
   protected readonly form = this.fb.nonNullable.group({
     title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
     description: ['', Validators.maxLength(500)],
     type: ['cours' as EventType, Validators.required],
-    date: ['' as string, Validators.required],
+    eventDate: [null as Date | null, Validators.required],
+    eventTime: ['', Validators.required],
     studentIds: [[] as string[], [Validators.required, Validators.minLength(1)]],
     linkedTaskId: ['' as string],
   });
 
   async ngOnInit(): Promise<void> {
+    if (this.authService.currentUser()?.role !== 'volunteer') {
+      this.router.navigate(['/calendar']);
+      return;
+    }
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) this.editId.set(id);
 
@@ -97,20 +111,18 @@ export class EventFormPageComponent implements OnInit {
   }
 
   private patchForm(event: CalendarEvent): void {
-    const dateStr = this.toDatetimeLocal(event.date);
+    const pad = (n: number) => n.toString().padStart(2, '0');
+    const d = event.date;
+    this.selectedStudentIds.set(event.studentIds);
     this.form.patchValue({
       title: event.title,
       description: event.description,
       type: event.type,
-      date: dateStr,
+      eventDate: d,
+      eventTime: `${pad(d.getHours())}:${pad(d.getMinutes())}`,
       studentIds: event.studentIds,
       linkedTaskId: event.linkedTaskId ?? '',
     });
-  }
-
-  private toDatetimeLocal(date: Date): string {
-    const pad = (n: number) => n.toString().padStart(2, '0');
-    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
   }
 
   protected isStudentSelected(uid: string): boolean {
@@ -123,7 +135,15 @@ export class EventFormPageComponent implements OnInit {
       ? current.filter((id) => id !== uid)
       : [...current, uid];
     this.form.controls.studentIds.setValue(updated);
+    this.selectedStudentIds.set(updated);
     this.form.controls.studentIds.markAsTouched();
+    const linkedId = this.form.controls.linkedTaskId.value;
+    if (linkedId) {
+      const task = this.tasks().find((t) => t.id === linkedId);
+      if (task && !updated.includes(task.assignedTo)) {
+        this.form.controls.linkedTaskId.setValue('');
+      }
+    }
   }
 
   protected getStudentById(uid: string): User | undefined {
@@ -140,9 +160,16 @@ export class EventFormPageComponent implements OnInit {
   }
 
   protected getDateError(): string {
-    const ctrl = this.form.controls.date;
+    const ctrl = this.form.controls.eventDate;
     if (!ctrl.touched) return '';
     if (ctrl.hasError('required')) return 'La date est obligatoire.';
+    return '';
+  }
+
+  protected getTimeError(): string {
+    const ctrl = this.form.controls.eventTime;
+    if (!ctrl.touched) return '';
+    if (ctrl.hasError('required')) return "L'heure est obligatoire.";
     return '';
   }
 
@@ -168,7 +195,9 @@ export class EventFormPageComponent implements OnInit {
 
     this.submitting.set(true);
     const value = this.form.getRawValue();
-    const eventDate = new Date(value.date);
+    const eventDate = new Date(value.eventDate!);
+    const [hours, minutes] = value.eventTime.split(':').map(Number);
+    eventDate.setHours(hours, minutes, 0, 0);
     const id = this.editId();
     const uid = this.authService.currentUser()!.uid;
 

@@ -65,6 +65,11 @@ export class TaskFormComponent implements OnInit {
   });
 
   async ngOnInit(): Promise<void> {
+    if (this.authService.currentUser()?.role !== 'volunteer') {
+      this.router.navigate(['/tasks']);
+      return;
+    }
+
     const id = this.route.snapshot.paramMap.get('id');
     if (id) this.editId.set(id);
 

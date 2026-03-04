@@ -8,6 +8,7 @@ import {
 import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { LucideAngularModule, ChevronLeft, Pencil, Trash2 } from 'lucide-angular';
+import { AuthService } from '../../../core/services/auth.service';
 import { EventService } from '../services/event.service';
 import { TaskService } from '../../tasks/services/task.service';
 import { UserService } from '../../../core/services/user.service';
@@ -39,11 +40,13 @@ export class EventDetailPageComponent implements OnInit {
   private readonly eventService = inject(EventService);
   private readonly taskService = inject(TaskService);
   private readonly userService = inject(UserService);
+  private readonly authService = inject(AuthService);
   private readonly toastService = inject(ToastService);
 
   protected readonly ChevronLeftIcon = ChevronLeft;
   protected readonly PencilIcon = Pencil;
   protected readonly Trash2Icon = Trash2;
+  protected readonly role = () => this.authService.currentUser()?.role;
 
   protected readonly event = signal<CalendarEvent | null>(null);
   protected readonly students = signal<User[]>([]);

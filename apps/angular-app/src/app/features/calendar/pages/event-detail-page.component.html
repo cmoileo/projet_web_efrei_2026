@@ -62,20 +62,22 @@
         }
       </div>
 
-      <div class="event-detail__actions">
-        <app-btn [icon]="PencilIcon" variant="secondary" size="md" (btnClick)="navigateToEdit()">
-          Modifier
-        </app-btn>
-        <app-btn
-          [icon]="Trash2Icon"
-          variant="danger"
-          size="md"
-          [loading]="deleting()"
-          (btnClick)="onDelete()"
-        >
-          Supprimer
-        </app-btn>
-      </div>
+      @if (role() === 'volunteer') {
+        <div class="event-detail__actions">
+          <app-btn [icon]="PencilIcon" variant="secondary" size="md" (btnClick)="navigateToEdit()">
+            Modifier
+          </app-btn>
+          <app-btn
+            [icon]="Trash2Icon"
+            variant="danger"
+            size="md"
+            [loading]="deleting()"
+            (btnClick)="onDelete()"
+          >
+            Supprimer
+          </app-btn>
+        </div>
+      }
     </div>
   }
 </div>

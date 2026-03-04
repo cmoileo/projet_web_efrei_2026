@@ -4,9 +4,9 @@ import { Router } from '@angular/router';
 import { LucideAngularModule, Plus, Users } from 'lucide-angular';
 import { AuthService } from '../../core/services/auth.service';
 import { DashboardService } from './services/dashboard.service';
-import { VOLUNTEER_DASHBOARD_MOCK } from './data/dashboard.mock';
 import { BtnComponent } from '../../shared/ui/atoms/btn/btn.component';
 import { StudentsCardComponent } from './components/students-card/students-card.component';
+import { VolunteerCardComponent } from './components/volunteer-card/volunteer-card.component';
 import { TaskSummaryCardComponent } from './components/task-summary-card/task-summary-card.component';
 import { EventsCardComponent } from './components/events-card/events-card.component';
 import { MessagesCardComponent } from './components/messages-card/messages-card.component';
@@ -18,6 +18,7 @@ import { MessagesCardComponent } from './components/messages-card/messages-card.
     BtnComponent,
     LucideAngularModule,
     StudentsCardComponent,
+    VolunteerCardComponent,
     TaskSummaryCardComponent,
     EventsCardComponent,
     MessagesCardComponent,
@@ -36,6 +37,8 @@ export class DashboardComponent {
 
   protected readonly currentUser = this.authService.currentUser;
 
+  protected readonly role = computed(() => this.currentUser()?.role);
+
   protected readonly greeting = computed(() => {
     const user = this.currentUser();
     return user ? `Bonjour, ${user.firstName} 👋` : 'Bonjour 👋';
@@ -45,14 +48,21 @@ export class DashboardComponent {
     initialValue: null,
   });
 
-  protected readonly unreadMessages = toSignal(this.dashboardService.unreadMessages$, {
+  protected readonly volunteerInfo = toSignal(this.dashboardService.volunteerInfo$, {
     initialValue: null,
   });
 
-  // TODO: brancher TaskService
-  protected readonly taskSummary = VOLUNTEER_DASHBOARD_MOCK.taskSummary;
+  protected readonly taskSummary = toSignal(this.dashboardService.taskSummary$, {
+    initialValue: null,
+  });
 
-  protected readonly events = VOLUNTEER_DASHBOARD_MOCK.events;
+  protected readonly events = toSignal(this.dashboardService.events$, {
+    initialValue: [],
+  });
+
+  protected readonly unreadMessages = toSignal(this.dashboardService.unreadMessages$, {
+    initialValue: null,
+  });
 
   protected navigateToTasks(): void {
     this.router.navigate(['/tasks']);

@@ -90,25 +90,11 @@
     }
   }
 
-  &__datetime {
-    height: 44px;
-    padding: 0 var(--space-4);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    background: var(--color-surface);
-    font-size: var(--font-size-body);
-    color: var(--color-text-primary);
-    font-family: var(--font-family);
-    outline: none;
-    transition: border-color var(--transition-fast);
-
-    &:focus {
-      border-color: var(--color-primary);
-    }
-
-    &--error {
-      border-color: var(--color-danger);
-    }
+  &__no-tasks {
+    font-size: var(--font-size-small);
+    color: var(--color-text-secondary);
+    margin: var(--space-1) 0 0;
+    font-style: italic;
   }
 
   &__field-error {

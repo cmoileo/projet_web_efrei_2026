@@ -36,6 +36,7 @@ export class CalendarPageComponent implements OnInit {
   protected readonly loading = signal(true);
   protected readonly error = signal<string | null>(null);
   protected readonly events = signal<CalendarEvent[]>([]);
+  protected readonly role = () => this.authService.currentUser()?.role;
 
   protected readonly calendarOptions = signal<CalendarOptions>({
     plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
@@ -55,8 +56,10 @@ export class CalendarPageComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     try {
-      const uid = this.authService.currentUser()!.uid;
-      const events = await this.eventService.getEventsByVolunteer(uid);
+      const user = this.authService.currentUser()!;
+      const events = user.role === 'volunteer'
+        ? await this.eventService.getEventsByVolunteer(user.uid)
+        : await this.eventService.getEventsByStudent(user.uid);
       this.events.set(events);
       this.calendarOptions.update((opts) => ({
         ...opts,

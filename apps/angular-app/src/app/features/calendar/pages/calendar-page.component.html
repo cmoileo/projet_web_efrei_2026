@@ -1,9 +1,11 @@
 <div class="calendar-page">
   <header class="calendar-page__header">
     <h1 class="calendar-page__title">Calendrier</h1>
-    <app-btn [icon]="PlusIcon" variant="primary" size="md" (btnClick)="navigateToNew()">
-      Nouvel événement
-    </app-btn>
+    @if (role() === 'volunteer') {
+      <app-btn [icon]="PlusIcon" variant="primary" size="md" (btnClick)="navigateToNew()">
+        Nouvel événement
+      </app-btn>
+    }
   </header>
 
   @if (loading()) {
