@@ -1,0 +1,20 @@
+<div class="calendar-page">
+  <header class="calendar-page__header">
+    <h1 class="calendar-page__title">Calendrier</h1>
+    <app-btn [icon]="PlusIcon" variant="primary" size="md" (btnClick)="navigateToNew()">
+      Nouvel événement
+    </app-btn>
+  </header>
+
+  @if (loading()) {
+    <div class="calendar-page__loading">
+      <div class="calendar-page__spinner"></div>
+    </div>
+  } @else if (error()) {
+    <div class="calendar-page__error">{{ error() }}</div>
+  } @else {
+    <div class="calendar-page__calendar">
+      <full-calendar [options]="calendarOptions()" />
+    </div>
+  }
+</div>

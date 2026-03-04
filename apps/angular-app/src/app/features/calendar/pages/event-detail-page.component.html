@@ -1,0 +1,81 @@
+<div class="event-detail">
+  <button class="event-detail__back" (click)="navigateBack()" aria-label="Retour au calendrier">
+    <lucide-angular [img]="ChevronLeftIcon" [size]="20" aria-hidden="true" />
+    Retour
+  </button>
+
+  @if (loading()) {
+    <div class="event-detail__loading">
+      <div class="event-detail__spinner"></div>
+    </div>
+  } @else if (error()) {
+    <div class="event-detail__error">{{ error() }}</div>
+  } @else if (event(); as event) {
+    <div class="event-detail__card">
+      <div class="event-detail__card-header">
+        <h1 class="event-detail__title">{{ event.title }}</h1>
+        <app-event-type-badge [type]="event.type" />
+      </div>
+
+      <div class="event-detail__body">
+        @if (event.description) {
+          <div class="event-detail__field">
+            <span class="event-detail__label">Description</span>
+            <p class="event-detail__value">{{ event.description }}</p>
+          </div>
+        }
+
+        <div class="event-detail__meta-grid">
+          <div class="event-detail__field">
+            <span class="event-detail__label">Date</span>
+            <span class="event-detail__value">{{ event.date | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+
+          <div class="event-detail__field">
+            <span class="event-detail__label">Créé le</span>
+            <span class="event-detail__value">{{ event.createdAt | date:'dd/MM/yyyy' }}</span>
+          </div>
+        </div>
+
+        <div class="event-detail__field">
+          <span class="event-detail__label">Élèves invités</span>
+          <div class="event-detail__chips">
+            @for (student of students(); track student.uid) {
+              <app-student-chip [firstName]="student.firstName" [lastName]="student.lastName" />
+            }
+            @if (students().length === 0) {
+              <span class="event-detail__empty-chips">Aucun élève</span>
+            }
+          </div>
+        </div>
+
+        @if (linkedTask(); as task) {
+          <div class="event-detail__linked-task">
+            <span class="event-detail__label">Tâche liée</span>
+            <div class="event-detail__linked-task-card">
+              <span class="event-detail__linked-task-title">{{ task.title }}</span>
+              <span class="event-detail__linked-task-date">
+                Échéance : {{ task.dueDate | date:'dd/MM/yyyy' }}
+              </span>
+            </div>
+          </div>
+        }
+      </div>
+
+      <div class="event-detail__actions">
+        <app-btn [icon]="PencilIcon" variant="secondary" size="md" (btnClick)="navigateToEdit()">
+          Modifier
+        </app-btn>
+        <app-btn
+          [icon]="Trash2Icon"
+          variant="danger"
+          size="md"
+          [loading]="deleting()"
+          (btnClick)="onDelete()"
+        >
+          Supprimer
+        </app-btn>
+      </div>
+    </div>
+  }
+</div>

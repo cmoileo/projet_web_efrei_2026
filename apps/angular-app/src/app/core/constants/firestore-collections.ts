@@ -4,4 +4,5 @@ export const FIRESTORE_COLLECTIONS = {
   MESSAGES: 'messages',
   CALENDAR_EVENTS: 'calendar_events',
   CONVERSATIONS: 'conversations',
+  EVENTS: 'events',
 } as const;

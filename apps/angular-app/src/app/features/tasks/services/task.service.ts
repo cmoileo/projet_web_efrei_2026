@@ -83,6 +83,14 @@ export class TaskService {
     const ref = doc(this.firestore, FIRESTORE_COLLECTIONS.TASKS, taskId);
     await deleteDoc(ref);
   }
+
+  async updateDueDate(taskId: string, dueDate: Date): Promise<void> {
+    const ref = doc(this.firestore, FIRESTORE_COLLECTIONS.TASKS, taskId);
+    await updateDoc(ref, {
+      dueDate: Timestamp.fromDate(dueDate),
+      updatedAt: serverTimestamp(),
+    });
+  }
 }
 
 function docToTask(snap: DocumentSnapshot): Task {

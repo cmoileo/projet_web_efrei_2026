@@ -1,0 +1,103 @@
+<div class="event-form">
+  <button class="event-form__back" (click)="navigateBack()" aria-label="Retour">
+    <lucide-angular [img]="ChevronLeftIcon" [size]="20" aria-hidden="true" />
+    Retour
+  </button>
+
+  <h1 class="event-form__title">
+    {{ editId() ? 'Modifier l\'événement' : 'Nouvel événement' }}
+  </h1>
+
+  @if (loading()) {
+    <div class="event-form__loading">
+      <div class="event-form__spinner"></div>
+    </div>
+  } @else {
+    <form class="event-form__form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+
+      <app-form-field label="Titre" [required]="true" [error]="getTitleError()">
+        <input matInput formControlName="title" placeholder="Titre de l'événement" />
+      </app-form-field>
+
+      <app-form-field label="Description" [error]="''">
+        <textarea matInput formControlName="description" placeholder="Description..." rows="3"></textarea>
+      </app-form-field>
+
+      <div class="event-form__field-group">
+        <div class="event-form__field-wrapper">
+          <label class="event-form__label event-form__label--required">Type</label>
+          <select class="event-form__select" formControlName="type" aria-label="Type d'événement">
+            @for (opt of typeOptions; track opt.value) {
+              <option [value]="opt.value">{{ opt.label }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="event-form__field-wrapper">
+          <label class="event-form__label event-form__label--required">Date et heure</label>
+          <input
+            class="event-form__datetime"
+            [class.event-form__datetime--error]="getDateError()"
+            type="datetime-local"
+            formControlName="date"
+          />
+          @if (getDateError()) {
+            <span class="event-form__field-error">{{ getDateError() }}</span>
+          }
+        </div>
+      </div>
+
+      <div class="event-form__field-wrapper">
+        <label class="event-form__label event-form__label--required">Élèves invités</label>
+        <div class="event-form__student-grid">
+          @for (student of students(); track student.uid) {
+            <button
+              type="button"
+              class="event-form__student-toggle"
+              [class.event-form__student-toggle--selected]="isStudentSelected(student.uid)"
+              (click)="toggleStudent(student.uid)"
+            >
+              <span class="event-form__student-avatar">
+                {{ student.firstName.charAt(0) }}{{ student.lastName.charAt(0) }}
+              </span>
+              {{ student.firstName }} {{ student.lastName }}
+            </button>
+          }
+        </div>
+        @if (getStudentIdsError()) {
+          <span class="event-form__field-error">{{ getStudentIdsError() }}</span>
+        }
+      </div>
+
+      @if (form.controls.studentIds.value.length > 0) {
+        <div class="event-form__field-wrapper">
+          <label class="event-form__label">Élèves sélectionnés</label>
+          <div class="event-form__chips">
+            @for (uid of form.controls.studentIds.value; track uid) {
+              @if (getStudentById(uid); as student) {
+                <app-student-chip [firstName]="student.firstName" [lastName]="student.lastName" />
+              }
+            }
+          </div>
+        </div>
+      }
+
+      <div class="event-form__field-wrapper">
+        <label class="event-form__label">Tâche liée (optionnel)</label>
+        <select class="event-form__select" formControlName="linkedTaskId" aria-label="Tâche liée">
+          <option value="">Aucune tâche</option>
+          @for (task of tasks(); track task.id) {
+            <option [value]="task.id">{{ task.title }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="event-form__footer">
+        <app-btn variant="ghost" type="button" (btnClick)="navigateBack()">Annuler</app-btn>
+        <app-btn variant="primary" type="submit" [loading]="submitting()">
+          {{ editId() ? 'Enregistrer les modifications' : 'Créer l\'événement' }}
+        </app-btn>
+      </div>
+    </form>
+  }
+</div>

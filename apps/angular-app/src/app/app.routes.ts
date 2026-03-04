@@ -32,9 +32,9 @@ export const routes: Routes = [
       },
       {
         path: 'calendar',
-        loadComponent: () =>
-          import('./features/calendar/calendar.component').then(
-            (m) => m.CalendarComponent,
+        loadChildren: () =>
+          import('./features/calendar/calendar.routes').then(
+            (m) => m.CALENDAR_ROUTES,
           ),
       },
       {
