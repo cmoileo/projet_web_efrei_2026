@@ -22,10 +22,8 @@
   }
 
   &__control {
-    // Assure que l'app-input ou tout autre input projeté hérite des styles
-    display: block;
+    display: flex;
 
-    // Applique les styles d'erreur sur les inputs enfants natifs et app-input
     &--error {
       ::ng-deep input,
       ::ng-deep textarea,

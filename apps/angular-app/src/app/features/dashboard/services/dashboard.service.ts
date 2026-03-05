@@ -82,15 +82,17 @@ export class DashboardService {
     switchMap(({ user, isLoading }) => {
       if (isLoading) return of(null);
       if (!user || user.role !== 'volunteer') return of([]);
-      return from(this.userService.getStudentsForVolunteer(user.uid)).pipe(
-        map((users) =>
+      return forkJoin({
+        users: from(this.userService.getStudentsForVolunteer(user.uid)),
+        tasks: from(this.taskService.getTasksByVolunteer(user.uid)),
+      }).pipe(
+        map(({ users, tasks }) =>
           users.map((u) => ({
             id: u.uid,
             firstName: u.firstName,
             lastName: u.lastName,
-            // TODO: brancher TaskService
-            taskCount: null,
-          })),
+            taskCount: tasks.filter((t) => t.assignedTo === u.uid && t.status !== 'done').length,
+          }))
         ),
         startWith(null),
         catchError(() => of([])),
