@@ -22,7 +22,7 @@ class DashboardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsync = ref.watch(currentUserModelProvider);
-    final data = ref.watch(dashboardDataProvider);
+    final eventsAsync = ref.watch(dashboardEventsProvider);
 
     return userAsync.when(
       data: (user) {
@@ -53,7 +53,9 @@ class DashboardScreen extends ConsumerWidget {
                 const SizedBox(height: AppSpacing.s4),
                 const TaskSummaryCard(),
                 const SizedBox(height: AppSpacing.s4),
-                EventsCard(events: data.events),
+                EventsCard(
+                  events: eventsAsync.valueOrNull ?? const [],
+                ),
                 const SizedBox(height: AppSpacing.s4),
                 const MessagesCard(),
               ],
